@@ -1,0 +1,20 @@
+{
+  "name": "shadesoft/gd-image",
+  "description": "An image editing package using PHP's GD library if other solutions fail for some reason.",
+  "keywords": ["image", "gd", "picture"],
+  "type": "package",
+  "license": "MIT",
+  "homepage": "https://github.com/ShadeSoft/GDImage",
+  "authors": [
+    {
+      "name": "Szabolcs Surányi",
+      "homepage": "http://shadesoft.hu"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "ShadeSoft\\GDImage\\": "" }
+  },
+  "require": {
+    "php": ">=5.3"
+  }
+}
