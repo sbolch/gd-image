@@ -103,7 +103,53 @@ class ImageSizer {
         $posX = ($nw - $width) / 2;
         $posY = ($nh - $height) / 2;
 
-        $this->saveImage($targetPath ?: $img, $width, $height, $ow, $oh, $srcImg, $imgInfo, $outputFormat, 0, 0, $posX, $posY);
+        $tmpImg = imagecreatetruecolor($nw, $nh);
+        imagecopyresampled($tmpImg, $srcImg, 0, 0, 0, 0, $nw, $nh, $ow, $oh);
+
+        $dstImg = imagecreatetruecolor($width, $height);
+        imagecopy($dstImg, $tmpImg, 0, 0, $posX, $posY, $width, $height);
+
+        $img = $targetPath ?: $img;
+
+        if(!$outputFormat) {
+            switch($imgInfo['mime']) {
+                case 'image/png':
+                    @imagepng($dstImg, $img, 9);
+                    break;
+                case 'image/gif':
+                    @imagegif($dstImg, $img);
+                    break;
+                case 'image/wbmp':
+                    @imagewbmp($dstImg, $img);
+                    break;
+                case 'image/jpeg':
+                default:
+                    @imagejpeg($dstImg, $img, 90);
+            }
+        } else {
+            switch($outputFormat) {
+                case 'png':
+                    @imagepng($dstImg, $img, 9);
+                    break;
+                case 'gif':
+                    @imagegif($dstImg, $img);
+                    break;
+                case 'wbmp':
+                case 'bmp':
+                    @imagewbmp($dstImg, $img);
+                    break;
+                case 'jpeg':
+                case 'jpg':
+                default:
+                    @imagejpeg($dstImg, $img, 90);
+            }
+        }
+
+        // clean
+        imagedestroy($dstImg);
+        imagedestroy($srcImg);
+
+//        $this->saveImage($targetPath ?: $img, $width, $height, $ow, $oh, $srcImg, $imgInfo, $outputFormat, 0, 0, $posX, $posY);
     }
 
     private function saveImage($img, $nw, $nh, $ow, $oh, $srcImg, $imgInfo, $outputFormat, $dx = 0, $dy = 0, $sx = 0, $sy = 0) {
