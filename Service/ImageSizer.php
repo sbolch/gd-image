@@ -2,7 +2,8 @@
 
 namespace ShadeSoft\GDImage\Service;
 
-use ShadeSoft\GDImage\Exception\FileException;
+use ShadeSoft\GDImage\Helper\ImageFile;
+use ShadeSoft\GDImage\Helper\ImageOptions;
 
 class ImageSizer {
 
@@ -15,7 +16,7 @@ class ImageSizer {
      */
     public function widen($img, $width, $outputFormat = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
-        $srcImg = $this->getImage($img, $imgInfo);
+        $srcImg = ImageFile::get($img, $imgInfo);
 
         if($width == $ow) {
             return;
@@ -37,7 +38,7 @@ class ImageSizer {
      */
     public function heighten($img, $height, $outputFormat = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
-        $srcImg = $this->getImage($img, $imgInfo);
+        $srcImg = ImageFile::get($img, $imgInfo);
 
         if($height == $oh) {
             return;
@@ -60,7 +61,7 @@ class ImageSizer {
      */
     public function maximize($img, $maxWidth, $maxHeight, $outputFormat = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
-        $srcImg = $this->getImage($img, $imgInfo);
+        $srcImg = ImageFile::get($img, $imgInfo);
 
         // calculate new size
         if(($ow > $maxWidth && $oh > $maxHeight && $ow >= $oh) || $ow > $maxWidth) {
@@ -87,7 +88,7 @@ class ImageSizer {
      */
     public function thumbnail($img, $width, $height, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
-        $srcImg = $this->getImage($img, $imgInfo);
+        $srcImg = ImageFile::get($img, $imgInfo);
 
         $or = $ow / $oh;
         $nr = $width / $height;
@@ -111,39 +112,21 @@ class ImageSizer {
 
         $img = $targetPath ?: $img;
 
-        if(!$outputFormat) {
-            switch($imgInfo['mime']) {
-                case 'image/png':
-                    @imagepng($dstImg, $img, 9);
-                    break;
-                case 'image/gif':
-                    @imagegif($dstImg, $img);
-                    break;
-                case 'image/wbmp':
-                    @imagewbmp($dstImg, $img);
-                    break;
-                case 'image/jpeg':
-                default:
-                    @imagejpeg($dstImg, $img, 90);
-            }
-        } else {
+        if($outputFormat) {
             switch($outputFormat) {
-                case 'png':
-                    @imagepng($dstImg, $img, 9);
-                    break;
-                case 'gif':
-                    @imagegif($dstImg, $img);
-                    break;
+                case 'png': $type = ImageFile::TYPE_PNG; break;
+                case 'gif': $type = ImageFile::TYPE_GIF; break;
                 case 'wbmp':
-                case 'bmp':
-                    @imagewbmp($dstImg, $img);
-                    break;
+                case 'bmp': $type = ImageFile::TYPE_BMP; break;
                 case 'jpeg':
                 case 'jpg':
-                default:
-                    @imagejpeg($dstImg, $img, 90);
+                default: $type = ImageFile::TYPE_JPG;
             }
+        } else {
+            $type = $imgInfo['mime'];
         }
+
+        ImageFile::save($img, $dstImg, $type);
 
         // clean
         imagedestroy($dstImg);
@@ -155,77 +138,28 @@ class ImageSizer {
     private function saveImage($img, $nw, $nh, $ow, $oh, $srcImg, $imgInfo, $outputFormat, $dx = 0, $dy = 0, $sx = 0, $sy = 0) {
         $dstImg = imagecreatetruecolor($nw, $nh);
         if($imgInfo['mime'] == 'image/png' || $imgInfo['mime'] == 'image/gif') {
-            $this->setTransparency($dstImg, $srcImg);
+            ImageOptions::copyTransparency($dstImg, $srcImg);
         }
         imagecopyresampled($dstImg, $srcImg, $dx, $dy, $sx, $sy, $nw, $nh, $ow, $oh);
-        if(!$outputFormat) {
-            switch($imgInfo['mime']) {
-                case 'image/png':
-                    @imagepng($dstImg, $img, 9);
-                    break;
-                case 'image/gif':
-                    @imagegif($dstImg, $img);
-                    break;
-                case 'image/wbmp':
-                    @imagewbmp($dstImg, $img);
-                    break;
-                case 'image/jpeg':
-                default:
-                    @imagejpeg($dstImg, $img, 90);
-            }
-        } else {
+
+        if($outputFormat) {
             switch($outputFormat) {
-                case 'png':
-                    @imagepng($dstImg, $img, 9);
-                    break;
-                case 'gif':
-                    @imagegif($dstImg, $img);
-                    break;
+                case 'png': $type = ImageFile::TYPE_PNG; break;
+                case 'gif': $type = ImageFile::TYPE_GIF; break;
                 case 'wbmp':
-                case 'bmp':
-                    @imagewbmp($dstImg, $img);
-                    break;
+                case 'bmp': $type = ImageFile::TYPE_BMP; break;
                 case 'jpeg':
                 case 'jpg':
-                default:
-                    @imagejpeg($dstImg, $img, 90);
+                default: $type = ImageFile::TYPE_JPG;
             }
+        } else {
+            $type = $imgInfo['mime'];
         }
+
+        ImageFile::save($img, $dstImg, $type);
 
         // clean
         imagedestroy($dstImg);
         imagedestroy($srcImg);
-    }
-
-    private function getImage($img, $imgInfo) {
-        switch($imgInfo['mime']) {
-            case 'image/jpeg':
-                $srcImg = imagecreatefromjpeg($img);
-                break;
-            case 'image/png':
-                $srcImg = imagecreatefrompng($img);
-                break;
-            case 'image/gif':
-                $srcImg = imagecreatefromgif($img);
-                break;
-            case 'image/wbmp':
-                $srcImg = imagecreatefromwbmp($img);
-                break;
-            default:
-                throw new FileException('Not supported image type.');
-        }
-
-        return $srcImg;
-    }
-
-    private function setTransparency($dstImg, $srcImg) {
-        $tIndex = imagecolortransparent($srcImg);
-        $tColor = array('red' => 255, 'green' => 255, 'blue' => 255);
-        if($tIndex >= 0) {
-            $tColor = imagecolorsforindex($srcImg, $tIndex);
-        }
-        $tIndex = imagecolorallocate($dstImg, $tColor['red'], $tColor['green'], $tColor['blue']);
-        imagefill($dstImg, 0, 0, $tIndex);
-        imagecolortransparent($dstImg, $tIndex);
     }
 }
