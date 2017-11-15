@@ -26,7 +26,12 @@ class ImageSizer {
         $nw = $width;
         $nh = round(($nw / $ow) * $oh);
 
-        $this->saveImage($img, $nw, $nh, $ow, $oh, $srcImg, $imgInfo, $outputFormat);
+        // save
+        $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
+
+        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
+
+        $this->clean(array(&$dstImg, &$srcImg));
     }
 
     /**
@@ -48,7 +53,12 @@ class ImageSizer {
         $nh = $height;
         $nw = round(($nh / $oh) * $ow);
 
-        $this->saveImage($img, $nw, $nh, $ow, $oh, $srcImg, $imgInfo, $outputFormat);
+        // save
+        $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
+
+        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
+
+        $this->clean(array(&$dstImg, &$srcImg));
     }
 
     /**
@@ -74,7 +84,12 @@ class ImageSizer {
             return;
         }
 
-        $this->saveImage($img, $nw, $nh, $ow, $oh, $srcImg, $imgInfo, $outputFormat);
+        // save
+        $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
+
+        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
+
+        $this->clean(array(&$dstImg, &$srcImg));
     }
 
     /**
@@ -90,6 +105,7 @@ class ImageSizer {
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
+        // calculate new size
         $or = $ow / $oh;
         $nr = $width / $height;
 
@@ -104,44 +120,40 @@ class ImageSizer {
         $posX = ($nw - $width) / 2;
         $posY = ($nh - $height) / 2;
 
-        $tmpImg = imagecreatetruecolor($nw, $nh);
-        imagecopyresampled($tmpImg, $srcImg, 0, 0, 0, 0, $nw, $nh, $ow, $oh);
-
-        $dstImg = imagecreatetruecolor($width, $height);
-        imagecopy($dstImg, $tmpImg, 0, 0, $posX, $posY, $width, $height);
+        // save
+        $tmpImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
+        $dstImg = $this->copy($tmpImg, $width, $height, $width, $height, $imgInfo, 0, 0, $posX, $posY);
 
         $img = $targetPath ?: $img;
 
-        if($outputFormat) {
-            switch($outputFormat) {
-                case 'png': $type = ImageFile::TYPE_PNG; break;
-                case 'gif': $type = ImageFile::TYPE_GIF; break;
-                case 'wbmp':
-                case 'bmp': $type = ImageFile::TYPE_BMP; break;
-                case 'jpeg':
-                case 'jpg':
-                default: $type = ImageFile::TYPE_JPG;
-            }
-        } else {
-            $type = $imgInfo['mime'];
-        }
+        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
 
-        ImageFile::save($img, $dstImg, $type);
-
-        // clean
-        imagedestroy($dstImg);
-        imagedestroy($srcImg);
-
-//        $this->saveImage($targetPath ?: $img, $width, $height, $ow, $oh, $srcImg, $imgInfo, $outputFormat, 0, 0, $posX, $posY);
+        $this->clean(array(&$dstImg, &$srcImg));
     }
 
-    private function saveImage($img, $nw, $nh, $ow, $oh, $srcImg, $imgInfo, $outputFormat, $dx = 0, $dy = 0, $sx = 0, $sy = 0) {
+    /// Needed private functions
+
+    private function resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo, $nx = 0, $ny = 0, $ox = 0, $oy = 0) {
         $dstImg = imagecreatetruecolor($nw, $nh);
         if($imgInfo['mime'] == 'image/png' || $imgInfo['mime'] == 'image/gif') {
             ImageOptions::copyTransparency($dstImg, $srcImg);
         }
-        imagecopyresampled($dstImg, $srcImg, $dx, $dy, $sx, $sy, $nw, $nh, $ow, $oh);
+        imagecopyresampled($dstImg, $srcImg, $nx, $ny, $ox, $oy, $nw, $nh, $ow, $oh);
 
+        return $dstImg;
+    }
+
+    private function copy($srcImg, $nw, $nh, $ow, $oh, $imgInfo, $nx = 0, $ny = 0, $ox = 0, $oy = 0) {
+        $dstImg = imagecreatetruecolor($nw, $nh);
+        if($imgInfo['mime'] == 'image/png' || $imgInfo['mime'] == 'image/gif') {
+            ImageOptions::copyTransparency($dstImg, $srcImg);
+        }
+        imagecopy($dstImg, $srcImg, $nx, $ny, $ox, $oy, $ow, $oh);
+
+        return $dstImg;
+    }
+
+    private function getType($outputFormat, $imgInfo) {
         if($outputFormat) {
             switch($outputFormat) {
                 case 'png': $type = ImageFile::TYPE_PNG; break;
@@ -156,10 +168,12 @@ class ImageSizer {
             $type = $imgInfo['mime'];
         }
 
-        ImageFile::save($img, $dstImg, $type);
+        return $type;
+    }
 
-        // clean
-        imagedestroy($dstImg);
-        imagedestroy($srcImg);
+    private function clean(array $resources) {
+        foreach($resources as &$resource) {
+            imagedestroy($resource);
+        }
     }
 }
