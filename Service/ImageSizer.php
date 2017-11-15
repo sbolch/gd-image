@@ -13,8 +13,9 @@ class ImageSizer {
      * @param $img
      * @param $width
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp" $outputFormat - if null, it won't change
+     * @param null|string $targetPath - if null, $img will be used
      */
-    public function widen($img, $width, $outputFormat = null) {
+    public function widen($img, $width, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
@@ -29,7 +30,7 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
 
         $this->clean(array(&$dstImg, &$srcImg));
     }
@@ -40,8 +41,9 @@ class ImageSizer {
      * @param $img
      * @param $height
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp" $outputFormat - if null, it won't change
+     * @param null|string $targetPath - if null, $img will be used
      */
-    public function heighten($img, $height, $outputFormat = null) {
+    public function heighten($img, $height, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
@@ -56,7 +58,7 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
 
         $this->clean(array(&$dstImg, &$srcImg));
     }
@@ -68,8 +70,9 @@ class ImageSizer {
      * @param $maxWidth
      * @param $maxHeight
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp" $outputFormat - if null, it won't change
+     * @param null|string $targetPath - if null, $img will be used
      */
-    public function maximize($img, $maxWidth, $maxHeight, $outputFormat = null) {
+    public function maximize($img, $maxWidth, $maxHeight, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
@@ -87,7 +90,7 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
 
         $this->clean(array(&$dstImg, &$srcImg));
     }
@@ -124,9 +127,7 @@ class ImageSizer {
         $tmpImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
         $dstImg = $this->copy($tmpImg, $width, $height, $width, $height, $imgInfo, 0, 0, $posX, $posY);
 
-        $img = $targetPath ?: $img;
-
-        ImageFile::save($img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
 
         $this->clean(array(&$dstImg, &$srcImg));
     }
