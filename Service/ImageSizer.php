@@ -2,11 +2,11 @@
 
 namespace ShadeSoft\GDImage\Service;
 
+use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Helper\ImageFile;
 use ShadeSoft\GDImage\Helper\ImageOptions;
 
 class ImageSizer {
-
     /**
      * Set an image to the given width while preserving its ratio
      *
@@ -14,12 +14,16 @@ class ImageSizer {
      * @param $width
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
+     * @throws FileException
      */
     public function widen($img, $width, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
         if($width == $ow) {
+            if($targetPath) {
+                ImageFile::save($targetPath, $srcImg, $this->getType($outputFormat, $imgInfo));
+            }
             return;
         }
 
@@ -42,12 +46,16 @@ class ImageSizer {
      * @param $height
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
+     * @throws FileException
      */
     public function heighten($img, $height, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
         if($height == $oh) {
+            if($targetPath) {
+                ImageFile::save($targetPath, $srcImg, $this->getType($outputFormat, $imgInfo));
+            }
             return;
         }
 
@@ -71,6 +79,7 @@ class ImageSizer {
      * @param $maxHeight
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
+     * @throws FileException
      */
     public function maximize($img, $maxWidth, $maxHeight, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
@@ -84,6 +93,9 @@ class ImageSizer {
             $nh = $maxHeight;
             $nw = round(($nh / $oh) * $ow);
         } else {
+            if($targetPath) {
+                ImageFile::save($targetPath, $srcImg, $this->getType($outputFormat, $imgInfo));
+            }
             return;
         }
 
@@ -103,6 +115,7 @@ class ImageSizer {
      * @param $height
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
+     * @throws FileException
      */
     public function thumbnail($img, $width, $height, $outputFormat = null, $targetPath = null) {
         list($ow, $oh) = $imgInfo = getimagesize($img);
