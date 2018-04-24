@@ -5,15 +5,13 @@ namespace ShadeSoft\GDImage\Test;
 use PHPUnit\Framework\TestCase;
 use ShadeSoft\GDImage\Service\ImageSizer;
 
-class ImageSizerTest extends TestCase {
+final class ImageSizerTest extends TestCase {
     private $sizer,
             $imgs,
             $testImg;
 
     public function __construct($name = null, array $data = array(), $dataName = '') {
-        parent::__construct(
-            $name, $data, $dataName
-        );
+        parent::__construct($name, $data, $dataName);
 
         $this->sizer    = new ImageSizer;
         $this->imgs     = array(
