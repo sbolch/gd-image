@@ -35,8 +35,7 @@ class ImageSizer {
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
         ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
-
-        $this->clean(array(&$dstImg, &$srcImg));
+        ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
     /**
@@ -67,8 +66,7 @@ class ImageSizer {
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
         ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
-
-        $this->clean(array(&$dstImg, &$srcImg));
+        ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
     /**
@@ -86,25 +84,34 @@ class ImageSizer {
         $srcImg = ImageFile::get($img, $imgInfo);
 
         // calculate new size
-        if(($ow > $maxWidth && $oh > $maxHeight && $ow >= $oh) || $ow > $maxWidth) {
-            $nw = $maxWidth;
-            $nh = round(($nw / $ow) * $oh);
-        } elseif(($ow > $maxWidth && $oh > $maxHeight && $ow < $oh) || $oh > $maxHeight) {
-            $nh = $maxHeight;
-            $nw = round(($nh / $oh) * $ow);
-        } else {
+        if($maxWidth >= $ow && $maxHeight >= $oh) {
             if($targetPath) {
                 ImageFile::save($targetPath, $srcImg, $this->getType($outputFormat, $imgInfo));
             }
             return;
+        } else {
+            if($ow >= $oh) {
+                $nw = $maxWidth;
+                $nh = floor(($nw / $ow) * $oh);
+            } else {
+                $nh = $maxHeight;
+                $nw = floor(($nh / $oh) * $ow);
+            }
+
+            if($nw > $maxWidth) {
+                $this->widen($img, $maxWidth, $outputFormat, $targetPath);
+                return;
+            } elseif($nh > $maxHeight) {
+                $this->heighten($img, $maxHeight, $outputFormat, $targetPath);
+                return;
+            }
         }
 
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
         ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
-
-        $this->clean(array(&$dstImg, &$srcImg));
+        ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
     /**
@@ -141,8 +148,7 @@ class ImageSizer {
         $dstImg = $this->copy($tmpImg, $width, $height, $width, $height, $imgInfo, 0, 0, $posX, $posY);
 
         ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
-
-        $this->clean(array(&$dstImg, &$srcImg));
+        ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
     /// Needed private functions
@@ -183,11 +189,5 @@ class ImageSizer {
         }
 
         return $type;
-    }
-
-    private function clean(array $resources) {
-        foreach($resources as &$resource) {
-            imagedestroy($resource);
-        }
     }
 }

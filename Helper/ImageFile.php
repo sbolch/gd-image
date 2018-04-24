@@ -62,4 +62,14 @@ class ImageFile {
                 @imagejpeg($img, $path, $quality ?: 90);
         }
     }
+
+    /**
+     * Cleans (destroys) given (by reference) image resources
+     * @param array $imgs
+     */
+    public static function clean(array $imgs) {
+        foreach($imgs as &$img) {
+            imagedestroy($img);
+        }
+    }
 }
