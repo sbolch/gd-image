@@ -25,22 +25,22 @@ class ImageSizerTest extends TestCase {
     }
 
     public function testWiden() {
-        foreach($this->imgs as $img) {
+        foreach($this->imgs as $type => $img) {
             @unlink($this->testImg);
             $this->sizer->widen($img, 2, null, $this->testImg);
             list($w, $h) = getimagesize($this->testImg);
-            $this->assertEquals(2, $w);
+            $this->assertEquals(2, $w, "Widen fails if image is {$type}:");
         }
 
         @unlink($this->testImg);
     }
 
     public function testHeighten() {
-        foreach($this->imgs as $img) {
+        foreach($this->imgs as $type => $img) {
             @unlink($this->testImg);
             $this->sizer->heighten($img, 2, null, $this->testImg);
             list($w, $h) = getimagesize($this->testImg);
-            $this->assertEquals(2, $h);
+            $this->assertEquals(2, $h, "Heighten fails if image is {$type}:");
         }
 
         @unlink($this->testImg);
@@ -55,12 +55,12 @@ class ImageSizerTest extends TestCase {
         );
 
         foreach($sizes as $size) {
-            foreach($this->imgs as $img) {
+            foreach($this->imgs as $type => $img) {
                 @unlink($this->testImg);
                 $this->sizer->maximize($img, $size[0], $size[1], null, $this->testImg);
                 list($w, $h) = getimagesize($this->testImg);
-                $this->assertLessThanOrEqual($size[0], $w);
-                $this->assertLessThanOrEqual($size[1], $h);
+                $this->assertLessThanOrEqual($size[0], $w, "Maximize width fails if image is {$type} with max sizes {$size[0]} and {$size[1]}:");
+                $this->assertLessThanOrEqual($size[1], $h, "Maximize height fails if image is {$type} with max sizes {$size[0]} and {$size[1]}:");
             }
         }
 
@@ -68,12 +68,12 @@ class ImageSizerTest extends TestCase {
     }
 
     public function testThumbnail() {
-        foreach($this->imgs as $img) {
+        foreach($this->imgs as $type => $img) {
             @unlink($this->testImg);
             $this->sizer->thumbnail($img, 2, 2, null, $this->testImg);
             list($w, $h) = getimagesize($this->testImg);
-            $this->assertEquals(2, $w);
-            $this->assertEquals(2, $h);
+            $this->assertEquals(2, $w, "Thumbnail width fails if image is {$type}:");
+            $this->assertEquals(2, $h, "Thumbnail height fails if image is {$type}:");
         }
 
         @unlink($this->testImg);
