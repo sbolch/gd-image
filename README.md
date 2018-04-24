@@ -2,6 +2,8 @@
 
 > An image editing package using PHP's GD library if other solutions fail for some reason.
 
+[![Build Status](https://travis-ci.org/ShadeSoft/GDImage.svg?branch=master)](https://travis-ci.org/ShadeSoft/GDImage)
+
 ## Installation
 
 Open a command console, enter your project directory and execute the
