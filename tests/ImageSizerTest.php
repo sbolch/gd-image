@@ -1,7 +1,5 @@
 <?php
 
-namespace ShadeSoft\GDImage\Test;
-
 use PHPUnit\Framework\TestCase;
 use ShadeSoft\GDImage\Service\ImageSizer;
 
