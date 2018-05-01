@@ -3,10 +3,17 @@
 namespace ShadeSoft\GDImage\Service;
 
 use ShadeSoft\GDImage\Exception\FileException;
+use ShadeSoft\GDImage\Helper\ImageCache;
 use ShadeSoft\GDImage\Helper\ImageFile;
 use ShadeSoft\GDImage\Helper\ImageOptions;
 
 class ImageSizer {
+    private $cache;
+
+    public function __construct() {
+        $this->cache = new ImageCache;
+    }
+
     /**
      * Set an image to the given width while preserving its ratio
      *
@@ -17,6 +24,10 @@ class ImageSizer {
      * @throws FileException
      */
     public function widen($img, $width, $outputFormat = null, $targetPath = null) {
+        if($targetPath && $this->cache->cached($targetPath)) {
+            return;
+        }
+
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
@@ -48,6 +59,10 @@ class ImageSizer {
      * @throws FileException
      */
     public function heighten($img, $height, $outputFormat = null, $targetPath = null) {
+        if($targetPath && $this->cache->cached($targetPath)) {
+            return;
+        }
+
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
@@ -80,6 +95,10 @@ class ImageSizer {
      * @throws FileException
      */
     public function maximize($img, $maxWidth, $maxHeight, $outputFormat = null, $targetPath = null) {
+        if($targetPath && $this->cache->cached($targetPath)) {
+            return;
+        }
+
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
@@ -125,6 +144,10 @@ class ImageSizer {
      * @throws FileException
      */
     public function thumbnail($img, $width, $height, $outputFormat = null, $targetPath = null) {
+        if($targetPath && $this->cache->cached($targetPath)) {
+            return;
+        }
+
         list($ow, $oh) = $imgInfo = getimagesize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
@@ -149,6 +172,17 @@ class ImageSizer {
 
         ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
+    }
+
+    /// Customization functions
+
+    /**
+     * Get image cache
+     *
+     * @return ImageCache
+     */
+    public function getCache() {
+        return $this->cache;
     }
 
     /// Needed private functions
