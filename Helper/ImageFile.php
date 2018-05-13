@@ -47,6 +47,16 @@ class ImageFile {
      * @param null|integer $quality
      */
     public static function save($path, $img, $type = self::TYPE_JPG, $quality = null) {
+        $xPath = explode('/', $path);
+        $dir = '';
+        for($i = 0; $i < count($xPath) - 1; $i++) {
+            $dir .= $xPath[$i];
+        }
+
+        if(!file_exists($dir) || !is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+
         switch($type) {
             case self::TYPE_PNG:
                 @imagepng($img, $path, $quality ?: 9);
