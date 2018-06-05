@@ -14,4 +14,4 @@ install: composer update
 
 script:
     - composer validate --strict --no-check-lock
-    - vendor/bin/phpunit --bootstrap vendor/autoload.php tests
+    - vendor/bin/phpunit --bootstrap vendor/autoload.php tests --coverage-clover=coverage.xml
