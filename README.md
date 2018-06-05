@@ -2,7 +2,10 @@
 
 > An image editing package using PHP's GD library if other solutions fail for some reason.
 
+[![Latest Stable Version](https://poser.pugx.org/shadesoft/gd-image/version)](https://packagist.org/packages/shadesoft/gd-image)
 [![Build Status](https://travis-ci.org/ShadeSoft/GDImage.svg?branch=master)](https://travis-ci.org/ShadeSoft/GDImage)
+[![Total Downloads](https://poser.pugx.org/shadesoft/gd-image/downloads)](https://packagist.org/packages/shadesoft/gd-image)
+[![License](https://poser.pugx.org/shadesoft/gd-image/license)](https://packagist.org/packages/shadesoft/gd-image)
 
 ## Installation
 
