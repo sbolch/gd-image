@@ -28,7 +28,7 @@ class ImageSizer {
             return;
         }
 
-        list($ow, $oh) = $imgInfo = getimagesize($img);
+        list($ow, $oh) = $imgInfo = ImageFile::getSize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
         if($width == $ow) {
@@ -63,7 +63,7 @@ class ImageSizer {
             return;
         }
 
-        list($ow, $oh) = $imgInfo = getimagesize($img);
+        list($ow, $oh) = $imgInfo = ImageFile::getSize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
         if($height == $oh) {
@@ -99,7 +99,7 @@ class ImageSizer {
             return;
         }
 
-        list($ow, $oh) = $imgInfo = getimagesize($img);
+        list($ow, $oh) = $imgInfo = ImageFile::getSize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
         // calculate new size
@@ -148,7 +148,7 @@ class ImageSizer {
             return;
         }
 
-        list($ow, $oh) = $imgInfo = getimagesize($img);
+        list($ow, $oh) = $imgInfo = ImageFile::getSize($img);
         $srcImg = ImageFile::get($img, $imgInfo);
 
         // calculate new size

@@ -2,7 +2,8 @@
 
 namespace ShadeSoft\GDImage\Helper;
 
-use ShadeSoft\GDImage\Exception\FileException;
+use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
+use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
 class ImageFile {
     const
@@ -12,11 +13,25 @@ class ImageFile {
         TYPE_BMP = 'image/wbmp';
 
     /**
+     * Gets and returns PHP's getimagesize data
+     * @param string $path
+     * @return array
+     * @throws FileNotFoundException
+     */
+    public static function getSize($path) {
+        if(!file_exists($path)) {
+            throw new FileNotFoundException('Image not found');
+        }
+
+        return getimagesize($path);
+    }
+
+    /**
      * Make and return an image resource from file
      * @param string $path
      * @param array $info
      * @return resource
-     * @throws FileException
+     * @throws FileInvalidTypeException
      */
     public static function get($path, array $info) {
         switch($info['mime']) {
@@ -33,7 +48,7 @@ class ImageFile {
                 $srcImg = imagecreatefromwbmp($path);
                 break;
             default:
-                throw new FileException('Not supported image type.');
+                throw new FileInvalidTypeException('Not supported image type.');
         }
 
         return $srcImg;
