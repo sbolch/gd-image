@@ -7,10 +7,11 @@ use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
 class ImageFile {
     const
-        TYPE_JPG = 'image/jpeg',
-        TYPE_PNG = 'image/png',
-        TYPE_GIF = 'image/gif',
-        TYPE_BMP = 'image/wbmp';
+        TYPE_JPG    = 'image/jpeg',
+        TYPE_PNG    = 'image/png',
+        TYPE_GIF    = 'image/gif',
+        TYPE_BMP    = 'image/wbmp',
+        TYPE_WEBP   = 'image/webp';
 
     /**
      * Gets and returns PHP's getimagesize data
@@ -47,6 +48,9 @@ class ImageFile {
             case self::TYPE_BMP:
                 $srcImg = imagecreatefromwbmp($path);
                 break;
+            case self::TYPE_WEBP:
+                $srcImg = imagecreatefromwebp($path);
+                break;
             default:
                 throw new FileInvalidTypeException('Not supported image type.');
         }
@@ -78,6 +82,9 @@ class ImageFile {
                 break;
             case self::TYPE_BMP:
                 @imagewbmp($img, $path);
+                break;
+            case self::TYPE_WEBP:
+                @imagewebp($img, $path, $quality ?: 90);
                 break;
             case self::TYPE_JPG:
             default:
