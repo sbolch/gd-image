@@ -17,8 +17,8 @@ class ImageSizer {
     /**
      * Set an image to the given width while preserving its ratio
      *
-     * @param $img
-     * @param $width
+     * @param string $img
+     * @param int $width
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
@@ -33,7 +33,7 @@ class ImageSizer {
 
         if($width == $ow) {
             if($targetPath) {
-                ImageFile::save($targetPath, $srcImg, $this->getType($outputFormat, $imgInfo));
+                ImageFile::save($targetPath, $srcImg, ImageFile::getType($outputFormat, $imgInfo));
             }
             return;
         }
@@ -45,15 +45,15 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
     /**
      * Set an image to the given height while preserving its ratio
      *
-     * @param $img
-     * @param $height
+     * @param string $img
+     * @param int $height
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
@@ -68,7 +68,7 @@ class ImageSizer {
 
         if($height == $oh) {
             if($targetPath) {
-                ImageFile::save($targetPath, $srcImg, $this->getType($outputFormat, $imgInfo));
+                ImageFile::save($targetPath, $srcImg, ImageFile::getType($outputFormat, $imgInfo));
             }
             return;
         }
@@ -80,16 +80,16 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
     /**
      * Maximize image's size by its longest dimension while preserving its ratio
      *
-     * @param $img
-     * @param $maxWidth
-     * @param $maxHeight
+     * @param string $img
+     * @param int $maxWidth
+     * @param int $maxHeight
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
@@ -105,7 +105,7 @@ class ImageSizer {
         // calculate new size
         if($maxWidth >= $ow && $maxHeight >= $oh) {
             if($targetPath) {
-                ImageFile::save($targetPath, $srcImg, $this->getType($outputFormat, $imgInfo));
+                ImageFile::save($targetPath, $srcImg, ImageFile::getType($outputFormat, $imgInfo));
             }
             return;
         } else {
@@ -129,16 +129,16 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
     /**
      * Make a thumbnail by cropping the image by its shortest dimension
      *
-     * @param $img
-     * @param $width
-     * @param $height
+     * @param string $img
+     * @param int $width
+     * @param int $height
      * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
@@ -170,7 +170,7 @@ class ImageSizer {
         $tmpImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
         $dstImg = $this->copy($tmpImg, $width, $height, $width, $height, $imgInfo, 0, 0, $posX, $posY);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, $this->getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
@@ -199,29 +199,11 @@ class ImageSizer {
 
     private function copy($srcImg, $nw, $nh, $ow, $oh, $imgInfo, $nx = 0, $ny = 0, $ox = 0, $oy = 0) {
         $dstImg = imagecreatetruecolor($nw, $nh);
-        if($imgInfo['mime'] == 'image/png' || $imgInfo['mime'] == 'image/gif') {
+        if($imgInfo['mime'] == 'image/png' || $imgInfo['mime'] == 'image/gif' || $imgInfo['mime'] == 'image/webp') {
             ImageOptions::copyTransparency($dstImg, $srcImg);
         }
         imagecopy($dstImg, $srcImg, $nx, $ny, $ox, $oy, $ow, $oh);
 
         return $dstImg;
-    }
-
-    private function getType($outputFormat, $imgInfo) {
-        if($outputFormat) {
-            switch($outputFormat) {
-                case 'png': $type = ImageFile::TYPE_PNG; break;
-                case 'gif': $type = ImageFile::TYPE_GIF; break;
-                case 'wbmp':
-                case 'bmp': $type = ImageFile::TYPE_BMP; break;
-                case 'jpeg':
-                case 'jpg':
-                default: $type = ImageFile::TYPE_JPG;
-            }
-        } else {
-            $type = $imgInfo['mime'];
-        }
-
-        return $type;
     }
 }

@@ -14,7 +14,7 @@ class ImageFile {
         TYPE_WEBP   = 'image/webp';
 
     /**
-     * Gets and returns PHP's getimagesize data
+     * Get and return PHP's getimagesize data
      * @param string $path
      * @return array
      * @throws FileNotFoundException
@@ -28,13 +28,42 @@ class ImageFile {
     }
 
     /**
+     * Get image type based on given format or mime info
+     * @param null|string $outputFormat - if null, mime info is used
+     * @param null|array $imgInfo
+     * @return string
+     */
+    public static function getType($outputFormat = null, array $imgInfo = null) {
+        $imgInfo = $imgInfo ?: self::getSize();
+
+        if($outputFormat) {
+            switch($outputFormat) {
+                case 'png': $type = ImageFile::TYPE_PNG; break;
+                case 'gif': $type = ImageFile::TYPE_GIF; break;
+                case 'wbmp':
+                case 'bmp': $type = ImageFile::TYPE_BMP; break;
+                case 'webp': $type = ImageFile::TYPE_WEBP; break;
+                case 'jpeg':
+                case 'jpg':
+                default: $type = ImageFile::TYPE_JPG;
+            }
+        } else {
+            $type = $imgInfo['mime'];
+        }
+
+        return $type;
+    }
+
+    /**
      * Make and return an image resource from file
      * @param string $path
      * @param array $info
      * @return resource
      * @throws FileInvalidTypeException
      */
-    public static function get($path, array $info) {
+    public static function get($path, array $info = null) {
+        $info = self::getSize();
+
         switch($info['mime']) {
             case self::TYPE_JPG:
                 $srcImg = imagecreatefromjpeg($path);
@@ -63,7 +92,7 @@ class ImageFile {
      * @param string $path
      * @param resource $img
      * @param string $type
-     * @param null|integer $quality
+     * @param null|int $quality
      */
     public static function save($path, $img, $type = self::TYPE_JPG, $quality = null) {
         $dir = explode('/', $path);
@@ -93,7 +122,7 @@ class ImageFile {
     }
 
     /**
-     * Cleans (destroys) given (by reference) image resources
+     * Clean (destroy) given (by reference) image resources
      * @param array $imgs
      */
     public static function clean(array $imgs) {
