@@ -33,7 +33,7 @@ class ImageSizer {
 
         if($width == $ow) {
             if($targetPath) {
-                ImageFile::save($targetPath, $srcImg, ImageFile::getType($outputFormat, $imgInfo));
+                ImageFile::save($targetPath, $srcImg, ImageFile::getType($img, $outputFormat, $imgInfo));
             }
             return;
         }
@@ -45,7 +45,7 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($img, $outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
@@ -68,7 +68,7 @@ class ImageSizer {
 
         if($height == $oh) {
             if($targetPath) {
-                ImageFile::save($targetPath, $srcImg, ImageFile::getType($outputFormat, $imgInfo));
+                ImageFile::save($targetPath, $srcImg, ImageFile::getType($img, $outputFormat, $imgInfo));
             }
             return;
         }
@@ -80,7 +80,7 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($img, $outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
@@ -105,7 +105,7 @@ class ImageSizer {
         // calculate new size
         if($maxWidth >= $ow && $maxHeight >= $oh) {
             if($targetPath) {
-                ImageFile::save($targetPath, $srcImg, ImageFile::getType($outputFormat, $imgInfo));
+                ImageFile::save($targetPath, $srcImg, ImageFile::getType($img, $outputFormat, $imgInfo));
             }
             return;
         } else {
@@ -129,7 +129,7 @@ class ImageSizer {
         // save
         $dstImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($img, $outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 
@@ -170,7 +170,7 @@ class ImageSizer {
         $tmpImg = $this->resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo);
         $dstImg = $this->copy($tmpImg, $width, $height, $width, $height, $imgInfo, 0, 0, $posX, $posY);
 
-        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($outputFormat, $imgInfo));
+        ImageFile::save($targetPath ?: $img, $dstImg, ImageFile::getType($img, $outputFormat, $imgInfo));
         ImageFile::clean(array(&$dstImg, &$srcImg));
     }
 

@@ -33,8 +33,8 @@ class ImageFile {
      * @param null|array $imgInfo
      * @return string
      */
-    public static function getType($outputFormat = null, array $imgInfo = null) {
-        $imgInfo = $imgInfo ?: self::getSize();
+    public static function getType($path, $outputFormat = null, array $imgInfo = null) {
+        $imgInfo = $imgInfo ?: self::getSize($path);
 
         if($outputFormat) {
             switch($outputFormat) {
@@ -62,7 +62,7 @@ class ImageFile {
      * @throws FileInvalidTypeException
      */
     public static function get($path, array $info = null) {
-        $info = self::getSize();
+        $info = $info ?: self::getSize($path);
 
         switch($info['mime']) {
             case self::TYPE_JPG:
