@@ -18,8 +18,7 @@ final class ImageConverterTest extends TestCase {
             'jpeg',
             'jpg',
             'png',
-            'gif',
-            'webp'
+            'gif'
         );
     }
 
