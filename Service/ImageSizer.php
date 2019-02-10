@@ -108,22 +108,22 @@ class ImageSizer {
                 ImageFile::save($targetPath, $srcImg, ImageFile::getType($img, $outputFormat, $imgInfo));
             }
             return;
-        } else {
-            if($ow >= $oh) {
-                $nw = $maxWidth;
-                $nh = floor(($nw / $ow) * $oh);
-            } else {
-                $nh = $maxHeight;
-                $nw = floor(($nh / $oh) * $ow);
-            }
+        }
 
-            if($nw > $maxWidth) {
-                $this->widen($img, $maxWidth, $outputFormat, $targetPath);
-                return;
-            } elseif($nh > $maxHeight) {
-                $this->heighten($img, $maxHeight, $outputFormat, $targetPath);
-                return;
-            }
+        if($ow >= $oh) {
+            $nw = $maxWidth;
+            $nh = floor(($nw / $ow) * $oh);
+        } else {
+            $nh = $maxHeight;
+            $nw = floor(($nh / $oh) * $ow);
+        }
+
+        if($nw > $maxWidth) {
+            $this->widen($img, $maxWidth, $outputFormat, $targetPath);
+            return;
+        } elseif($nh > $maxHeight) {
+            $this->heighten($img, $maxHeight, $outputFormat, $targetPath);
+            return;
         }
 
         // save
@@ -188,21 +188,20 @@ class ImageSizer {
     /// Needed private functions
 
     private function resample($srcImg, $nw, $nh, $ow, $oh, $imgInfo, $nx = 0, $ny = 0, $ox = 0, $oy = 0) {
-        $dstImg = imagecreatetruecolor($nw, $nh);
-        if($imgInfo['mime'] == 'image/png' || $imgInfo['mime'] == 'image/gif') {
-            ImageOptions::copyTransparency($dstImg, $srcImg);
-        }
-        imagecopyresampled($dstImg, $srcImg, $nx, $ny, $ox, $oy, $nw, $nh, $ow, $oh);
-
-        return $dstImg;
+        return $this->copy($srcImg, $nw, $nh, $ow, $oh, $imgInfo, $nx, $ny, $ox, $oy, true);
     }
 
-    private function copy($srcImg, $nw, $nh, $ow, $oh, $imgInfo, $nx = 0, $ny = 0, $ox = 0, $oy = 0) {
+    private function copy($srcImg, $nw, $nh, $ow, $oh, $imgInfo, $nx = 0, $ny = 0, $ox = 0, $oy = 0, $resample = false) {
         $dstImg = imagecreatetruecolor($nw, $nh);
-        if($imgInfo['mime'] == 'image/png' || $imgInfo['mime'] == 'image/gif' || $imgInfo['mime'] == 'image/webp') {
+        if(in_array($imgInfo['mime'], array('image/png', 'image/gif', 'image/webp'))) {
             ImageOptions::copyTransparency($dstImg, $srcImg);
         }
-        imagecopy($dstImg, $srcImg, $nx, $ny, $ox, $oy, $ow, $oh);
+
+        if($resample) {
+            imagecopyresampled($dstImg, $srcImg, $nx, $ny, $ox, $oy, $nw, $nh, $ow, $oh);
+        } else {
+            imagecopy($dstImg, $srcImg, $nx, $ny, $ox, $oy, $ow, $oh);
+        }
 
         return $dstImg;
     }
