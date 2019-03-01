@@ -2,24 +2,28 @@
 
 namespace ShadeSoft\GDImage\Helper;
 
-class ImageCache {
+class ImageCache
+{
     private $enabled;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->disable();
     }
 
     /**
      * Enable image cache
      */
-    public function enable() {
+    public function enable()
+    {
         $this->enabled = true;
     }
 
     /**
      * Disable image cache
      */
-    public function disable() {
+    public function disable()
+    {
         $this->enabled = false;
     }
 
@@ -28,7 +32,8 @@ class ImageCache {
      * @param $path
      * @return bool
      */
-    public function cached($path) {
+    public function cached($path)
+    {
         return $this->enabled && file_exists($path);
     }
 }

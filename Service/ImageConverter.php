@@ -6,7 +6,8 @@ use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Helper\ImageFile;
 use ShadeSoft\GDImage\Helper\ImageOptions;
 
-class ImageConverter {
+class ImageConverter
+{
 
     /**
      * Convert image to given format
@@ -15,7 +16,8 @@ class ImageConverter {
      * @param string $targetPath
      * @param null|int $quality
      */
-    public function convert($img, $outputFormat, $targetPath, $quality = null) {
+    public function convert($img, $outputFormat, $targetPath, $quality = null)
+    {
         ImageFile::save(
             $targetPath,
             ImageFile::get($img),

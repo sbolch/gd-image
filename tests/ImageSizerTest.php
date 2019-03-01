@@ -3,12 +3,14 @@
 use PHPUnit\Framework\TestCase;
 use ShadeSoft\GDImage\Service\ImageSizer;
 
-final class ImageSizerTest extends TestCase {
-    private $sizer,
-            $imgs,
-            $testImg;
+final class ImageSizerTest extends TestCase
+{
+    private $sizer;
+    private $imgs;
+    private $testImg;
 
-    public function __construct($name = null, array $data = array(), $dataName = '') {
+    public function __construct($name = null, array $data = array(), $dataName = '')
+    {
         parent::__construct($name, $data, $dataName);
 
         $this->sizer    = new ImageSizer;
@@ -20,8 +22,9 @@ final class ImageSizerTest extends TestCase {
         $this->testImg  = __DIR__ . '/img/test.jpg';
     }
 
-    public function testWiden() {
-        foreach($this->imgs as $type => $img) {
+    public function testWiden()
+    {
+        foreach ($this->imgs as $type => $img) {
             @unlink($this->testImg);
             $this->sizer->widen($img, 2, null, $this->testImg);
             list($w, $h) = getimagesize($this->testImg);
@@ -31,8 +34,9 @@ final class ImageSizerTest extends TestCase {
         @unlink($this->testImg);
     }
 
-    public function testHeighten() {
-        foreach($this->imgs as $type => $img) {
+    public function testHeighten()
+    {
+        foreach ($this->imgs as $type => $img) {
             @unlink($this->testImg);
             $this->sizer->heighten($img, 2, null, $this->testImg);
             list($w, $h) = getimagesize($this->testImg);
@@ -42,7 +46,8 @@ final class ImageSizerTest extends TestCase {
         @unlink($this->testImg);
     }
 
-    public function testMaximize() {
+    public function testMaximize()
+    {
         $sizes = array(
             array(20, 20),
             array(2, 20),
@@ -50,8 +55,8 @@ final class ImageSizerTest extends TestCase {
             array(2, 2)
         );
 
-        foreach($sizes as $size) {
-            foreach($this->imgs as $type => $img) {
+        foreach ($sizes as $size) {
+            foreach ($this->imgs as $type => $img) {
                 @unlink($this->testImg);
                 $this->sizer->maximize($img, $size[0], $size[1], null, $this->testImg);
                 list($w, $h) = getimagesize($this->testImg);
@@ -63,8 +68,9 @@ final class ImageSizerTest extends TestCase {
         @unlink($this->testImg);
     }
 
-    public function testThumbnail() {
-        foreach($this->imgs as $type => $img) {
+    public function testThumbnail()
+    {
+        foreach ($this->imgs as $type => $img) {
             @unlink($this->testImg);
             $this->sizer->thumbnail($img, 2, 2, null, $this->testImg);
             list($w, $h) = getimagesize($this->testImg);
