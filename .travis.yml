@@ -8,9 +8,10 @@ php:
     - 7.2
 
 before_install:
+    - phpenv config-add travis.php.ini
     - composer self-update
 
-install: composer update
+install: composer install --dev --prefer-dist --no-suggest
 
 script:
     - composer validate --strict --no-check-lock
