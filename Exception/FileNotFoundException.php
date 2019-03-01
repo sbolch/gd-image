@@ -2,4 +2,6 @@
 
 namespace ShadeSoft\GDImage\Exception;
 
-class FileNotFoundException extends FileException {}
+class FileNotFoundException extends FileException
+{
+}

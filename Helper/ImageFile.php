@@ -5,13 +5,14 @@ namespace ShadeSoft\GDImage\Helper;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
-class ImageFile {
+class ImageFile
+{
     const
-        TYPE_JPG    = 'image/jpeg',
-        TYPE_PNG    = 'image/png',
-        TYPE_GIF    = 'image/gif',
-        TYPE_BMP    = 'image/wbmp',
-        TYPE_WEBP   = 'image/webp';
+        TYPE_JPG    = 'image/jpeg';
+    const TYPE_PNG    = 'image/png';
+    const TYPE_GIF    = 'image/gif';
+    const TYPE_BMP    = 'image/wbmp';
+    const TYPE_WEBP   = 'image/webp';
 
     /**
      * Get and return PHP's getimagesize data
@@ -19,8 +20,9 @@ class ImageFile {
      * @return array
      * @throws FileNotFoundException
      */
-    public static function getSize($path) {
-        if(!file_exists($path)) {
+    public static function getSize($path)
+    {
+        if (!file_exists($path)) {
             throw new FileNotFoundException('Image not found');
         }
 
@@ -33,11 +35,12 @@ class ImageFile {
      * @param null|array $imgInfo
      * @return string
      */
-    public static function getType($path, $outputFormat = null, array $imgInfo = null) {
+    public static function getType($path, $outputFormat = null, array $imgInfo = null)
+    {
         $imgInfo = $imgInfo ?: self::getSize($path);
 
-        if($outputFormat) {
-            switch($outputFormat) {
+        if ($outputFormat) {
+            switch ($outputFormat) {
                 case 'png': $type = ImageFile::TYPE_PNG; break;
                 case 'gif': $type = ImageFile::TYPE_GIF; break;
                 case 'wbmp':
@@ -61,10 +64,11 @@ class ImageFile {
      * @return resource
      * @throws FileInvalidTypeException
      */
-    public static function get($path, array $info = null) {
+    public static function get($path, array $info = null)
+    {
         $info = $info ?: self::getSize($path);
 
-        switch($info['mime']) {
+        switch ($info['mime']) {
             case self::TYPE_JPG:
                 $srcImg = imagecreatefromjpeg($path);
                 break;
@@ -94,15 +98,16 @@ class ImageFile {
      * @param string $type
      * @param null|int $quality
      */
-    public static function save($path, $img, $type = self::TYPE_JPG, $quality = null) {
+    public static function save($path, $img, $type = self::TYPE_JPG, $quality = null)
+    {
         $dir = explode('/', $path);
         unset($dir[count($dir) - 1]);
         $dir = implode('/', $dir);
-        if(!file_exists($dir) || !is_dir($dir)) {
+        if (!file_exists($dir) || !is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
 
-        switch($type) {
+        switch ($type) {
             case self::TYPE_PNG:
                 @imagepng($img, $path, $quality ?: 9);
                 break;
@@ -125,8 +130,9 @@ class ImageFile {
      * Clean (destroy) given (by reference) image resources
      * @param array $imgs
      */
-    public static function clean(array $imgs) {
-        foreach($imgs as &$img) {
+    public static function clean(array $imgs)
+    {
+        foreach ($imgs as &$img) {
             imagedestroy($img);
         }
     }
