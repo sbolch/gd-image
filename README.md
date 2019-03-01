@@ -4,6 +4,7 @@
 
 [![Latest Stable Version](https://poser.pugx.org/shadesoft/gd-image/version)](https://packagist.org/packages/shadesoft/gd-image)
 [![Build Status](https://travis-ci.org/ShadeSoft/GDImage.svg?branch=master)](https://travis-ci.org/ShadeSoft/GDImage)
+[![StyleCI](https://styleci.io/repos/109691251/shield?style=flat)](https://styleci.io/repos/109691251)
 [![Total Downloads](https://poser.pugx.org/shadesoft/gd-image/downloads)](https://packagist.org/packages/shadesoft/gd-image)
 [![License](https://poser.pugx.org/shadesoft/gd-image/license)](https://packagist.org/packages/shadesoft/gd-image)
 
