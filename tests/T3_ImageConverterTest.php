@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use ShadeSoft\GDImage\Helper\ImageFile;
 use ShadeSoft\GDImage\Service\ImageConverter;
 
-final class ImageConverterTest extends TestCase
+final class T3_ImageConverterTest extends TestCase
 {
     private $converter;
     private $img;

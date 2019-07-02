@@ -22,7 +22,7 @@ class ImageFile
      */
     public static function getSize($path)
     {
-        if (!file_exists($path)) {
+        if (!file_exists($path) || is_dir($path)) {
             throw new FileNotFoundException('Image not found');
         }
 

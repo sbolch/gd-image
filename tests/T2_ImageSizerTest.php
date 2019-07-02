@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use ShadeSoft\GDImage\Service\ImageSizer;
 
-final class ImageSizerTest extends TestCase
+final class T2_ImageSizerTest extends TestCase
 {
     private $sizer;
     private $imgs;
