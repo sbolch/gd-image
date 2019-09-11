@@ -33,7 +33,7 @@ of the Composer documentation.
   class Demo {
     public function demo() {
       $img = 'path/to/image.png';
-      
+
       $converter = new ImageConverter;
       $converter->convert($img, 'jpg', 'path/to/converted-image.jpg');
     }
@@ -43,7 +43,7 @@ of the Composer documentation.
 #### Parameters
 
 - $img: path to image file
-- $outputFormat: "jpeg" | "jpg" | "png" | "gif" | "wbmp" | "bmp" | "webp"
+- $outputFormat: "jpeg" | "jpg" | "png" | "gif" | "bmp" | "webp"
 - $targetPath: desired path of the converted image file
 - $quality: null | integer - quality percentage for jpg and webp, compression level for png (-1-9), unusable with gif and bmp
 
@@ -67,7 +67,7 @@ of the Composer documentation.
 
 - $img: path to image file
 - $width | $height | $maxWidth | $maxHeight: dimenstions of the desired image
-- $outputFormat: null | "jpeg" | "jpg" | "png" | "gif" | "wbmp" | "bmp" | "webp" - if null, it won't change
+- $outputFormat: null | "jpeg" | "jpg" | "png" | "gif" | "bmp" | "webp" - if null, it won't change
 - $targetPath: null | string - if null, $img will be used
 
 #### Available functions

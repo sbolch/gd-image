@@ -12,7 +12,7 @@ class ImageConverter
     /**
      * Convert image to given format
      * @param string $img
-     * @param string $outputFormat
+     * @param "jpeg"|"jpg"|"png"|"gif"|"bmp"|"webp" $outputFormat
      * @param string $targetPath
      * @param null|int $quality
      */

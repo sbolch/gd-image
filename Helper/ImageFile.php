@@ -7,11 +7,10 @@ use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
 class ImageFile
 {
-    const
-        TYPE_JPG    = 'image/jpeg';
+    const TYPE_JPG    = 'image/jpeg';
     const TYPE_PNG    = 'image/png';
     const TYPE_GIF    = 'image/gif';
-    const TYPE_BMP    = 'image/wbmp';
+    const TYPE_BMP    = 'image/bmp';
     const TYPE_WEBP   = 'image/webp';
 
     /**
@@ -43,7 +42,6 @@ class ImageFile
             switch ($outputFormat) {
                 case 'png': $type = ImageFile::TYPE_PNG; break;
                 case 'gif': $type = ImageFile::TYPE_GIF; break;
-                case 'wbmp':
                 case 'bmp': $type = ImageFile::TYPE_BMP; break;
                 case 'webp': $type = ImageFile::TYPE_WEBP; break;
                 case 'jpeg':
@@ -79,7 +77,10 @@ class ImageFile
                 $srcImg = imagecreatefromgif($path);
                 break;
             case self::TYPE_BMP:
-                $srcImg = imagecreatefromwbmp($path);
+                if (PHP_VERSION_ID < 70200) {
+                    throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
+                }
+                $srcImg = imagecreatefrombmp($path);
                 break;
             case self::TYPE_WEBP:
                 $srcImg = imagecreatefromwebp($path);
@@ -97,6 +98,7 @@ class ImageFile
      * @param resource $img
      * @param string $type
      * @param null|int $quality
+     * @throws FileInvalidTypeException
      */
     public static function save($path, $img, $type = self::TYPE_JPG, $quality = null)
     {
@@ -115,7 +117,10 @@ class ImageFile
                 @imagegif($img, $path);
                 break;
             case self::TYPE_BMP:
-                @imagewbmp($img, $path);
+                if (PHP_VERSION_ID < 70200) {
+                    throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
+                }
+                @imagebmp($img, $path);
                 break;
             case self::TYPE_WEBP:
                 @imagewebp($img, $path, $quality ?: 90);

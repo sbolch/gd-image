@@ -21,7 +21,7 @@ class ImageSizer
      *
      * @param string $img
      * @param int $width
-     * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
+     * @param null|"jpeg"|"jpg"|"png"|"gif"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
      */
@@ -57,7 +57,7 @@ class ImageSizer
      *
      * @param string $img
      * @param int $height
-     * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
+     * @param null|"jpeg"|"jpg"|"png"|"gif"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
      */
@@ -94,7 +94,7 @@ class ImageSizer
      * @param string $img
      * @param int $maxWidth
      * @param int $maxHeight
-     * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
+     * @param null|"jpeg"|"jpg"|"png"|"gif"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
      */
@@ -144,7 +144,7 @@ class ImageSizer
      * @param string $img
      * @param int $width
      * @param int $height
-     * @param null|"jpeg"|"jpg"|"png"|"gif"|"wbmp"|"bmp"|"webp" $outputFormat - if null, it won't change
+     * @param null|"jpeg"|"jpg"|"png"|"gif"|"bmp"|"webp" $outputFormat - if null, it won't change
      * @param null|string $targetPath - if null, $img will be used
      * @throws FileException
      */
