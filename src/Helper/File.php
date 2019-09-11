@@ -5,13 +5,13 @@ namespace ShadeSoft\GDImage\Helper;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
-class ImageFile
+class File
 {
-    const TYPE_JPG    = 'image/jpeg';
-    const TYPE_PNG    = 'image/png';
-    const TYPE_GIF    = 'image/gif';
-    const TYPE_BMP    = 'image/bmp';
-    const TYPE_WEBP   = 'image/webp';
+    const TYPE_BMP  = 'image/bmp';
+    const TYPE_GIF  = 'image/gif';
+    const TYPE_JPG  = 'image/jpeg';
+    const TYPE_PNG  = 'image/png';
+    const TYPE_WEBP = 'image/webp';
 
     /**
      * Get and return PHP's getimagesize data
