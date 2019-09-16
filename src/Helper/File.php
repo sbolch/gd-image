@@ -12,6 +12,14 @@ class File
     const TYPE_JPG  = 'image/jpeg';
     const TYPE_PNG  = 'image/png';
     const TYPE_WEBP = 'image/webp';
+    const FORMATS   = [
+        'bmp'  => 'image/bmp',
+        'gif'  => 'image/gif',
+        'jpg'  => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png'  => 'image/png',
+        'webp' => 'image/webp'
+    ];
 
     /**
      * Get and return PHP's getimagesize data
