@@ -44,11 +44,12 @@ class File
      */
     public static function getType($path, $outputFormat = null, array $imgInfo = null)
     {
-        $imgInfo = $imgInfo ?: self::getSize($path);
+        $imgInfo          = $imgInfo ?: self::getSize($path);
+        $availableFormats = self::FORMATS;
 
         if ($outputFormat) {
-            $type = isset(self::FORMATS[$outputFormat])
-                ? self::FORMATS[$outputFormat]
+            $type = isset($availableFormats[$outputFormat])
+                ? $availableFormats[$outputFormat]
                 : self::JPG;
         } else {
             $type = $imgInfo['mime'];
