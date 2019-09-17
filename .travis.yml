@@ -14,7 +14,7 @@ install: composer install --dev --prefer-dist --no-suggest
 
 script:
     - composer validate --strict --no-check-lock
-    #- vendor/bin/phpunit --bootstrap vendor/autoload.php tests #--coverage-clover=coverage.xml
+    - vendor/bin/phpunit --bootstrap vendor/autoload.php tests #--coverage-clover=coverage.xml
 
 #after_success:
 #    - bash <(curl -s https://codecov.io/bash)

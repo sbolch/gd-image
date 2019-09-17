@@ -7,18 +7,18 @@ use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
 class File
 {
-    const TYPE_BMP  = 'image/bmp';
-    const TYPE_GIF  = 'image/gif';
-    const TYPE_JPG  = 'image/jpeg';
-    const TYPE_PNG  = 'image/png';
-    const TYPE_WEBP = 'image/webp';
-    const FORMATS   = [
-        'bmp'  => 'image/bmp',
-        'gif'  => 'image/gif',
-        'jpg'  => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'png'  => 'image/png',
-        'webp' => 'image/webp'
+    const BMP     = 'image/x-ms-bmp';
+    const GIF     = 'image/gif';
+    const JPG     = 'image/jpeg';
+    const PNG     = 'image/png';
+    const WEBP    = 'image/webp';
+    const FORMATS = [
+        'bmp'  => self::BMP,
+        'gif'  => self::GIF,
+        'jpg'  => self::JPG,
+        'jpeg' => self::JPG,
+        'png'  => self::PNG,
+        'webp' => self::WEBP
     ];
 
     /**
@@ -47,15 +47,9 @@ class File
         $imgInfo = $imgInfo ?: self::getSize($path);
 
         if ($outputFormat) {
-            switch ($outputFormat) {
-                case 'png': $type = ImageFile::TYPE_PNG; break;
-                case 'gif': $type = ImageFile::TYPE_GIF; break;
-                case 'bmp': $type = ImageFile::TYPE_BMP; break;
-                case 'webp': $type = ImageFile::TYPE_WEBP; break;
-                case 'jpeg':
-                case 'jpg':
-                default: $type = ImageFile::TYPE_JPG;
-            }
+            $type = isset(self::FORMATS[$outputFormat])
+                ? self::FORMATS[$outputFormat]
+                : self::JPG;
         } else {
             $type = $imgInfo['mime'];
         }
@@ -75,22 +69,22 @@ class File
         $info = $info ?: self::getSize($path);
 
         switch ($info['mime']) {
-            case self::TYPE_JPG:
+            case self::JPG:
                 $srcImg = imagecreatefromjpeg($path);
                 break;
-            case self::TYPE_PNG:
+            case self::PNG:
                 $srcImg = imagecreatefrompng($path);
                 break;
-            case self::TYPE_GIF:
+            case self::GIF:
                 $srcImg = imagecreatefromgif($path);
                 break;
-            case self::TYPE_BMP:
+            case self::BMP:
                 if (PHP_VERSION_ID < 70200) {
                     throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
                 }
                 $srcImg = imagecreatefrombmp($path);
                 break;
-            case self::TYPE_WEBP:
+            case self::WEBP:
                 $srcImg = imagecreatefromwebp($path);
                 break;
             default:
@@ -108,7 +102,7 @@ class File
      * @param null|int $quality
      * @throws FileInvalidTypeException
      */
-    public static function save($path, $img, $type = self::TYPE_JPG, $quality = null)
+    public static function save($path, $img, $type = self::JPG, $quality = null)
     {
         $dir = explode('/', $path);
         unset($dir[count($dir) - 1]);
@@ -118,24 +112,24 @@ class File
         }
 
         switch ($type) {
-            case self::TYPE_PNG:
-                @imagepng($img, $path, $quality ?: 9);
+            case self::PNG:
+                @imagepng($img, $path, $quality);
                 break;
-            case self::TYPE_GIF:
+            case self::GIF:
                 @imagegif($img, $path);
                 break;
-            case self::TYPE_BMP:
+            case self::BMP:
                 if (PHP_VERSION_ID < 70200) {
                     throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
                 }
                 @imagebmp($img, $path);
                 break;
-            case self::TYPE_WEBP:
-                @imagewebp($img, $path, $quality ?: 90);
+            case self::WEBP:
+                @imagewebp($img, $path, $quality);
                 break;
-            case self::TYPE_JPG:
+            case self::JPG:
             default:
-                @imagejpeg($img, $path, $quality ?: 90);
+                @imagejpeg($img, $path, $quality);
         }
     }
 

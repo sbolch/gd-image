@@ -15,7 +15,7 @@ class Converter
 
     /**
      * Resolve magic calls to set output format
-     * @param 'toBmp'|'toGif'|'toJpg'|'toJpeg'|'toPng'|'toWebp' $method
+     * @param string $method
      * @param array $args - First argument is quality percent as integer
      * @return self
      * @throws FileInvalidTypeException
@@ -29,7 +29,7 @@ class Converter
                 throw new FileInvalidTypeException('Not supported image type.');
             }
 
-            $this->format = $format;
+            $this->format = File::FORMATS[$format];
 
             if (isset($args[0]) && $args[0] != null) {
                 $this->quality($args[0]);
