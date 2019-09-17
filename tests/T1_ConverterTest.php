@@ -102,7 +102,7 @@ final class T1_ConverterTest extends TestCase
 
     public function testWebp()
     {
-        if(function_exists('imagewebp')) {
+        if (function_exists('imagewebp')) {
             @unlink($this->testImg);
 
             $this->converter
