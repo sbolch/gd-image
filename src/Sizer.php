@@ -129,7 +129,8 @@ class Sizer extends Converter
      * @throws FileException
      * @see Converter::image()
      */
-    public function image($image = null) {
+    public function image($image = null)
+    {
         if (!$image) {
             return $this->img;
         }
@@ -157,7 +158,8 @@ class Sizer extends Converter
         return $dstImg;
     }
 
-    private function getDimensions() {
+    private function getDimensions()
+    {
         return [imagesx($this->img), imagesy($this->img)];
     }
 }
