@@ -43,7 +43,7 @@ class Converter
 
     /**
      * Set source image for conversion
-     * @param string|resource $path
+     * @param string|resource $image
      * @return self
      * @throws FileException
      */
