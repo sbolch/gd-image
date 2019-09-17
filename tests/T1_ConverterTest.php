@@ -102,15 +102,19 @@ final class T1_ConverterTest extends TestCase
 
     public function testWebp()
     {
-        @unlink($this->testImg);
+        if(function_exists('imagewebp')) {
+            @unlink($this->testImg);
 
-        $this->converter
-            ->image($this->img)
-            ->target($this->testImg)
-            ->toWebp()
-            ->save();
+            $this->converter
+                ->image($this->img)
+                ->target($this->testImg)
+                ->toWebp()
+                ->save();
 
-        $this->assertEquals(File::getType($this->testImg), File::WEBP);
-        @unlink($this->testImg);
+            $this->assertEquals(File::getType($this->testImg), File::WEBP);
+            @unlink($this->testImg);
+        } else {
+            $this->expectOutputString('Error: Call to undefined function ShadeSoft\GDImage\Helper\imagewebp()');
+        }
     }
 }
