@@ -11,7 +11,7 @@ final class T1_ConverterTest extends TestCase
     private $img;
     private $testImg;
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 

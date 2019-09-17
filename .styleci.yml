@@ -1,6 +1,3 @@
 preset: psr2
 
 risky: false
-
-enabled:
-  - long_array_syntax
