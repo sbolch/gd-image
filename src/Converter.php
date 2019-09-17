@@ -22,14 +22,16 @@ class Converter
      */
     public function __call($method, $args)
     {
+        $availableFormats = File::FORMATS;
+
         if (strpos($method, 'to') == 0) {
             $format = lcfirst(substr($method, 2));
 
-            if (!isset(File::FORMATS[$format])) {
+            if (!isset($availableFormats[$format])) {
                 throw new FileInvalidTypeException('Not supported image type.');
             }
 
-            $this->format = File::FORMATS[$format];
+            $this->format = $availableFormats[$format];
 
             if (isset($args[0]) && $args[0] != null) {
                 $this->quality($args[0]);

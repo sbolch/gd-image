@@ -115,4 +115,12 @@ final class T1_ConverterTest extends TestCase
             @unlink($this->testImg);
         }
     }
+
+    /**
+     * @expectedException ShadeSoft\GDImage\Exception\FileInvalidTypeException
+     */
+    public function testInvalid()
+    {
+        $this->converter->toInvalid();
+    }
 }

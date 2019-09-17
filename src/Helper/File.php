@@ -7,7 +7,7 @@ use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
 class File
 {
-    const BMP     = 'image/x-ms-bmp';
+    const BMP     = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
     const GIF     = 'image/gif';
     const JPG     = 'image/jpeg';
     const PNG     = 'image/png';
