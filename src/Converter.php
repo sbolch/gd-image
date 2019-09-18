@@ -8,10 +8,10 @@ use ShadeSoft\GDImage\Helper\File;
 
 class Converter
 {
-    private $img;
-    private $format;
-    private $path;
-    private $quality;
+    protected $img;
+    protected $format;
+    protected $path;
+    protected $quality;
 
     /**
      * Resolve magic calls to set output format

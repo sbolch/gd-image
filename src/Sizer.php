@@ -3,13 +3,11 @@
 namespace ShadeSoft\GDImage;
 
 use ShadeSoft\GDImage\Exception\FileException;
-use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
-use ShadeSoft\GDImage\Helper\File;
 
 class Sizer extends Converter
 {
-    private $posX;
-    private $posY;
+    protected $posX;
+    protected $posY;
 
     /**
      * Set the image to the given width while preserving its ratio
@@ -135,7 +133,7 @@ class Sizer extends Converter
             return $this->img;
         }
 
-        parent::image($image);
+        return parent::image($image);
     }
 
     private function resample($nw, $nh, $ow, $oh)
