@@ -108,7 +108,7 @@ class File
         $dir = explode('/', $path);
         unset($dir[count($dir) - 1]);
         $dir = implode('/', $dir);
-        if (!file_exists($dir) || !is_dir($dir)) {
+        if ($dir && (!file_exists($dir) || !is_dir($dir))) {
             mkdir($dir, 0777, true);
         }
 
