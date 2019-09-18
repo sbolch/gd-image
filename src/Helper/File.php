@@ -114,7 +114,10 @@ class File
 
         switch ($type) {
             case self::PNG:
-                @imagepng($img, $path, $quality);
+                @imagepng($img, $path, $quality
+                    ? ($quality >= 10 ? floor($quality / 10 - 1) : 0)
+                    : -1
+                );
                 break;
             case self::GIF:
                 @imagegif($img, $path);
@@ -126,11 +129,11 @@ class File
                 @imagebmp($img, $path);
                 break;
             case self::WEBP:
-                @imagewebp($img, $path, $quality);
+                @imagewebp($img, $path, $quality ?: 80);
                 break;
             case self::JPG:
             default:
-                @imagejpeg($img, $path, $quality);
+                @imagejpeg($img, $path, $quality ?: -1);
         }
     }
 
