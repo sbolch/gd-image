@@ -50,6 +50,11 @@ class Converter
     public function image($image)
     {
         $this->img = gettype($image) == 'resource' ? $image : File::get($image);
+
+        if (gettype($image) == 'string') {
+            $this->path = $image;
+        }
+
         return $this;
     }
 
