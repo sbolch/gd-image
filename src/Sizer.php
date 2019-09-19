@@ -147,7 +147,7 @@ class Sizer extends Converter
 
     private function resample($nw, $nh, $ow, $oh)
     {
-        return $this->copy($nw, $nh, $ow, $oh, true);
+        return $this->copy($nw, $nh, $ow, $oh, 0, 0, true);
     }
 
     private function copy($nw, $nh, $ow, $oh, $x = 0, $y = 0, $resample = false)
