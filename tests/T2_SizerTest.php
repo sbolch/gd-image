@@ -68,6 +68,21 @@ final class T2_SizerTest extends TestCase
         }
     }
 
+    public function testCrop()
+    {
+        foreach ($this->imgs as $type => $img) {
+            $testImg = $this->sizer
+                ->image($img)
+                ->x(0)
+                ->y(0)
+                ->crop(2, 2)
+                ->image();
+
+            $this->assertEquals(2, imagesy($testImg), "Crop width fails if image is $type:");
+            $this->assertEquals(2, imagesy($testImg), "Crop height fails if image is $type:");
+        }
+    }
+
     public function testThumbnail()
     {
         foreach ($this->imgs as $type => $img) {

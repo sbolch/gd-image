@@ -3,6 +3,8 @@
 namespace ShadeSoft\GDImage;
 
 use ShadeSoft\GDImage\Exception\FileException;
+use ShadeSoft\GDImage\Helper\File;
+use ShadeSoft\GDImage\Helper\Options;
 
 class Sizer extends Converter
 {
@@ -44,7 +46,7 @@ class Sizer extends Converter
     }
 
     /**
-     * Maximize image's size by its longest dimension while preserving its ratio
+     * Maximize image's size by its longer dimension while preserving its ratio
      * @param int $width
      * @param int $height
      * @return self
@@ -74,6 +76,39 @@ class Sizer extends Converter
         return $this;
     }
 
+    /**
+     * Crop picture by its shorter dimension
+     * @param int $width
+     * @param int $height
+     * @return self
+     */
+    public function crop($width, $height)
+    {
+        list($ow, $oh) = $this->getDimensions();
+
+        $or = $ow / $oh;
+        $nr = $width / $height;
+
+        if ($nr >= $or) {
+            $nw = $width;
+            $nh = round($nw / $or);
+        } else {
+            $nh = $height;
+            $nw = round($nh * $or);
+        }
+
+        $this->img = $this->resample($nw, $nh, $ow, $oh);
+        $this->img = $this->copy($width, $height, $width, $height);
+
+        return $this;
+    }
+
+    /**
+     * Make a thumbnail by cropping the image by its shorter dimension (centered crop)
+     * @param int $width
+     * @param int $height
+     * @return self
+     */
     public function thumbnail($width, $height)
     {
         list($ow, $oh) = $this->getDimensions();
@@ -145,7 +180,9 @@ class Sizer extends Converter
     {
         $dstImg = imagecreatetruecolor($nw, $nh);
 
-        // TODO: transparency
+        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
+            Options::transparency($dstImg, $this->img);
+        }
 
         if ($resample) {
             imagecopyresampled($dstImg, $this->img, 0, 0, $this->posX, $this->posY, $nw, $nh, $ow, $oh);

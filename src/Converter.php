@@ -12,6 +12,7 @@ class Converter
     protected $format;
     protected $path;
     protected $quality;
+    protected $originalFormat;
 
     /**
      * Resolve magic calls to set output format
@@ -52,7 +53,8 @@ class Converter
         $this->img = gettype($image) == 'resource' ? $image : File::get($image);
 
         if (gettype($image) == 'string') {
-            $this->path = $image;
+            $this->path           = $image;
+            $this->originalFormat = File::getType($image);
         }
 
         return $this;
