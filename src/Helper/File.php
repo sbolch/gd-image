@@ -96,7 +96,7 @@ class File
     }
 
     /**
-     * Save image to given path from image resource
+     * Save image to given path
      * @param string $path
      * @param resource $img
      * @param string $type
@@ -112,6 +112,30 @@ class File
             mkdir($dir, 0777, true);
         }
 
+        self::output($path, $img, $type, $quality);
+    }
+
+    /**
+     * Print image to PHP output
+     */
+    public static function print($img, $type = self::JPG, $quality = null)
+    {
+        self::output('php://output', $img, $type, $quality);
+    }
+
+    /**
+     * Clean (destroy) given (by reference) image resources
+     * @param array $imgs
+     */
+    public static function clean(array $imgs)
+    {
+        foreach ($imgs as &$img) {
+            imagedestroy($img);
+        }
+    }
+
+    private static function output($path, $img, $type, $quality)
+    {
         switch ($type) {
             case self::PNG:
                 @imagepng($img, $path, $quality
@@ -134,17 +158,6 @@ class File
             case self::JPG:
             default:
                 @imagejpeg($img, $path, $quality ?: -1);
-        }
-    }
-
-    /**
-     * Clean (destroy) given (by reference) image resources
-     * @param array $imgs
-     */
-    public static function clean(array $imgs)
-    {
-        foreach ($imgs as &$img) {
-            imagedestroy($img);
         }
     }
 }
