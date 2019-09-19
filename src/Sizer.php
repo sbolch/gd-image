@@ -8,8 +8,6 @@ use ShadeSoft\GDImage\Helper\Options;
 
 class Sizer extends Converter
 {
-    protected $posX;
-    protected $posY;
 
     /**
      * Set the image to the given width while preserving its ratio
@@ -77,16 +75,18 @@ class Sizer extends Converter
     }
 
     /**
-     * Crop picture by its shorter dimension
+     * Crop picture to given dimensions starting at the given position
      * @param int $width
      * @param int $height
+     * @param int $x
+     * @param int $y
      * @return self
      */
-    public function crop($width, $height)
+    public function crop($width, $height, $x = 0, $y = 0)
     {
         list($ow, $oh) = $this->getDimensions();
 
-        $this->img = $this->copy($width, $height, $ow, $oh);
+        $this->img = $this->copy($width, $height, $ow, $oh, $x, $y);
 
         return $this;
     }
@@ -112,34 +112,12 @@ class Sizer extends Converter
             $nw = round($nh * $or);
         }
 
-        $this->posX = round(($nw - $width) / 2);
-        $this->posY = round(($nh - $height) / 2);
-
         $this->img = $this->resample($nw, $nh, $ow, $oh);
-        $this->img = $this->copy($width, $height, $width, $height);
+        $this->img = $this->copy($width, $height, $width, $height,
+            round(($nw - $width) / 2),
+            round(($nh - $height) / 2)
+        );
 
-        return $this;
-    }
-
-    /**
-     * Set the top-left position on the X-axis
-     * @param int $position
-     * @return self
-     */
-    public function x($position)
-    {
-        $this->posX = $position;
-        return $this;
-    }
-
-    /**
-     * Set the top-left position on the Y-axis
-     * @param int $position
-     * @return self
-     */
-    public function y($position)
-    {
-        $this->posY = $position;
         return $this;
     }
 
@@ -172,7 +150,7 @@ class Sizer extends Converter
         return $this->copy($nw, $nh, $ow, $oh, true);
     }
 
-    private function copy($nw, $nh, $ow, $oh, $resample = false)
+    private function copy($nw, $nh, $ow, $oh, $x = 0, $y = 0, $resample = false)
     {
         $dstImg = imagecreatetruecolor($nw, $nh);
 
@@ -181,9 +159,9 @@ class Sizer extends Converter
         }
 
         if ($resample) {
-            imagecopyresampled($dstImg, $this->img, 0, 0, $this->posX, $this->posY, $nw, $nh, $ow, $oh);
+            imagecopyresampled($dstImg, $this->img, 0, 0, $x, $y, $nw, $nh, $ow, $oh);
         } else {
-            imagecopy($dstImg, $this->img, 0, 0, $this->posX, $this->posY, $ow, $oh);
+            imagecopy($dstImg, $this->img, 0, 0, $x, $y, $ow, $oh);
         }
 
         return $dstImg;

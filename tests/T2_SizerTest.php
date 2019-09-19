@@ -73,8 +73,6 @@ final class T2_SizerTest extends TestCase
         foreach ($this->imgs as $type => $img) {
             $testImg = $this->sizer
                 ->image($img)
-                ->x(0)
-                ->y(0)
                 ->crop(2, 2)
                 ->image();
 

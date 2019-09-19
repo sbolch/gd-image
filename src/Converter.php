@@ -25,7 +25,7 @@ class Converter
     {
         $availableFormats = File::FORMATS;
 
-        if (strpos($method, 'to') == 0) {
+        if (strpos($method, 'to') === 0) {
             $format = lcfirst(substr($method, 2));
 
             if (!isset($availableFormats[$format])) {
