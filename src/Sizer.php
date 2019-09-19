@@ -174,9 +174,9 @@ class Sizer extends Converter
     /**
      * Print image to PHP output
      */
-    public function print()
+    public function output()
     {
-        File::print($this->img, $this->format, $this->quality);
+        File::printToOutput($this->img, $this->format, $this->quality);
     }
 
     private function resample($nw, $nh, $ow, $oh)

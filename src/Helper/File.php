@@ -118,7 +118,7 @@ class File
     /**
      * Print image to PHP output
      */
-    public static function print($img, $type = self::JPG, $quality = null)
+    public static function printToOutput($img, $type = self::JPG, $quality = null)
     {
         self::output('php://output', $img, $type, $quality);
     }
