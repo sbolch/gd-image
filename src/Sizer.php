@@ -86,19 +86,7 @@ class Sizer extends Converter
     {
         list($ow, $oh) = $this->getDimensions();
 
-        $or = $ow / $oh;
-        $nr = $width / $height;
-
-        if ($nr >= $or) {
-            $nw = $width;
-            $nh = round($nw / $or);
-        } else {
-            $nh = $height;
-            $nw = round($nh * $or);
-        }
-
-        $this->img = $this->resample($nw, $nh, $ow, $oh);
-        $this->img = $this->copy($width, $height, $width, $height);
+        $this->img = $this->copy($width, $height, $ow, $oh);
 
         return $this;
     }
