@@ -4,7 +4,6 @@ namespace ShadeSoft\GDImage;
 
 use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Helper\File;
-use ShadeSoft\GDImage\Helper\Options;
 
 class Sizer extends Converter
 {

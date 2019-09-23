@@ -5,6 +5,7 @@ namespace ShadeSoft\GDImage;
 use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Helper\File;
+use ShadeSoft\GDImage\Helper\Options;
 
 class Converter
 {
