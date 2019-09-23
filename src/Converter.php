@@ -5,7 +5,6 @@ namespace ShadeSoft\GDImage;
 use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Helper\File;
-use ShadeSoft\GDImage\Helper\Options;
 
 class Converter
 {
@@ -84,14 +83,6 @@ class Converter
     }
 
     /**
-     * Set transparency
-     */
-    public function transparent()
-    {
-        $this->transparency($this->img);
-    }
-
-    /**
      * Save generated image
      * @return string
      */
@@ -100,16 +91,5 @@ class Converter
         File::save($this->path, $this->img, $this->format, $this->quality);
 
         return $this->path;
-    }
-
-    /**
-     * Copy transparency if present
-     * @param resource $img
-     */
-    protected function transparency($img)
-    {
-        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
-            Options::transparency($img, $this->img);
-        }
     }
 }
