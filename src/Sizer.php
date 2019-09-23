@@ -142,6 +142,11 @@ class Sizer extends Converter
      */
     public function output()
     {
+        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])
+            && in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
+            Options::transparency($this->img, $this->format);
+        }
+
         File::printToOutput($this->img, $this->format, $this->quality);
     }
 
