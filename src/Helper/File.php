@@ -5,13 +5,21 @@ namespace ShadeSoft\GDImage\Helper;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
-class ImageFile
+class File
 {
-    const TYPE_JPG    = 'image/jpeg';
-    const TYPE_PNG    = 'image/png';
-    const TYPE_GIF    = 'image/gif';
-    const TYPE_BMP    = 'image/bmp';
-    const TYPE_WEBP   = 'image/webp';
+    const BMP     = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
+    const GIF     = 'image/gif';
+    const JPG     = 'image/jpeg';
+    const PNG     = 'image/png';
+    const WEBP    = 'image/webp';
+    const FORMATS = [
+        'bmp'  => self::BMP,
+        'gif'  => self::GIF,
+        'jpg'  => self::JPG,
+        'jpeg' => self::JPG,
+        'png'  => self::PNG,
+        'webp' => self::WEBP
+    ];
 
     /**
      * Get and return PHP's getimagesize data
@@ -36,18 +44,13 @@ class ImageFile
      */
     public static function getType($path, $outputFormat = null, array $imgInfo = null)
     {
-        $imgInfo = $imgInfo ?: self::getSize($path);
+        $imgInfo          = $imgInfo ?: self::getSize($path);
+        $availableFormats = self::FORMATS;
 
         if ($outputFormat) {
-            switch ($outputFormat) {
-                case 'png': $type = ImageFile::TYPE_PNG; break;
-                case 'gif': $type = ImageFile::TYPE_GIF; break;
-                case 'bmp': $type = ImageFile::TYPE_BMP; break;
-                case 'webp': $type = ImageFile::TYPE_WEBP; break;
-                case 'jpeg':
-                case 'jpg':
-                default: $type = ImageFile::TYPE_JPG;
-            }
+            $type = isset($availableFormats[$outputFormat])
+                ? $availableFormats[$outputFormat]
+                : self::JPG;
         } else {
             $type = $imgInfo['mime'];
         }
@@ -67,22 +70,22 @@ class ImageFile
         $info = $info ?: self::getSize($path);
 
         switch ($info['mime']) {
-            case self::TYPE_JPG:
+            case self::JPG:
                 $srcImg = imagecreatefromjpeg($path);
                 break;
-            case self::TYPE_PNG:
+            case self::PNG:
                 $srcImg = imagecreatefrompng($path);
                 break;
-            case self::TYPE_GIF:
+            case self::GIF:
                 $srcImg = imagecreatefromgif($path);
                 break;
-            case self::TYPE_BMP:
+            case self::BMP:
                 if (PHP_VERSION_ID < 70200) {
                     throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
                 }
                 $srcImg = imagecreatefrombmp($path);
                 break;
-            case self::TYPE_WEBP:
+            case self::WEBP:
                 $srcImg = imagecreatefromwebp($path);
                 break;
             default:
@@ -93,42 +96,31 @@ class ImageFile
     }
 
     /**
-     * Save image to given path from image resource
+     * Save image to given path
      * @param string $path
      * @param resource $img
      * @param string $type
      * @param null|int $quality
      * @throws FileInvalidTypeException
      */
-    public static function save($path, $img, $type = self::TYPE_JPG, $quality = null)
+    public static function save($path, $img, $type = self::JPG, $quality = null)
     {
         $dir = explode('/', $path);
         unset($dir[count($dir) - 1]);
         $dir = implode('/', $dir);
-        if (!file_exists($dir) || !is_dir($dir)) {
+        if ($dir && (!file_exists($dir) || !is_dir($dir))) {
             mkdir($dir, 0777, true);
         }
 
-        switch ($type) {
-            case self::TYPE_PNG:
-                @imagepng($img, $path, $quality ?: 9);
-                break;
-            case self::TYPE_GIF:
-                @imagegif($img, $path);
-                break;
-            case self::TYPE_BMP:
-                if (PHP_VERSION_ID < 70200) {
-                    throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
-                }
-                @imagebmp($img, $path);
-                break;
-            case self::TYPE_WEBP:
-                @imagewebp($img, $path, $quality ?: 90);
-                break;
-            case self::TYPE_JPG:
-            default:
-                @imagejpeg($img, $path, $quality ?: 90);
-        }
+        self::output($path, $img, $type, $quality);
+    }
+
+    /**
+     * Print image to PHP output
+     */
+    public static function printToOutput($img, $type = self::JPG, $quality = null)
+    {
+        self::output('php://output', $img, $type, $quality);
     }
 
     /**
@@ -139,6 +131,33 @@ class ImageFile
     {
         foreach ($imgs as &$img) {
             imagedestroy($img);
+        }
+    }
+
+    private static function output($path, $img, $type, $quality)
+    {
+        switch ($type) {
+            case self::PNG:
+                @imagepng($img, $path, $quality
+                    ? ($quality >= 10 ? floor($quality / 10 - 1) : 0)
+                    : -1
+                );
+                break;
+            case self::GIF:
+                @imagegif($img, $path);
+                break;
+            case self::BMP:
+                if (PHP_VERSION_ID < 70200) {
+                    throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
+                }
+                @imagebmp($img, $path);
+                break;
+            case self::WEBP:
+                @imagewebp($img, $path, $quality ?: 80);
+                break;
+            case self::JPG:
+            default:
+                @imagejpeg($img, $path, $quality ?: -1);
         }
     }
 }
