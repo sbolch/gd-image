@@ -154,9 +154,7 @@ class Sizer extends Converter
     {
         $dstImg = imagecreatetruecolor($nw, $nh);
 
-        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
-            Options::transparency($dstImg, $this->img);
-        }
+        $this->transparency($dstImg);
 
         if ($resample) {
             imagecopyresampled($dstImg, $this->img, 0, 0, $x, $y, $nw, $nh, $ow, $oh);

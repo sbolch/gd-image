@@ -53,9 +53,11 @@ class Converter
         $this->img = gettype($image) == 'resource' ? $image : File::get($image);
 
         if (gettype($image) == 'string') {
-            $this->path           = $image;
-            $this->originalFormat = File::getType($image);
+            $this->path   = $image;
+            $this->format = $this->originalFormat = File::getType($image);
         }
+
+        $this->transparency($this->img);
 
         return $this;
     }
@@ -91,5 +93,16 @@ class Converter
         File::save($this->path, $this->img, $this->format, $this->quality);
 
         return $this->path;
+    }
+
+    /**
+     * Copy transparency if present
+     * @param resource $img
+     */
+    protected function transparency($img)
+    {
+        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
+            Options::transparency($img, $this->img);
+        }
     }
 }
