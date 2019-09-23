@@ -58,8 +58,6 @@ class Converter
             $this->format = $this->originalFormat = File::getType($image);
         }
 
-        $this->transparency($this->img);
-
         return $this;
     }
 
@@ -83,6 +81,13 @@ class Converter
     {
         $this->quality = $quality;
         return $this;
+    }
+
+    /**
+     * Set transparency
+     */
+    public function transparent() {
+        $this->transparency($this->img);
     }
 
     /**
