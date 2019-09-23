@@ -43,7 +43,7 @@ class Converter
     }
 
     /**
-     * Set source image for conversion
+     * Set source image
      * @param string|resource $image
      * @return self
      * @throws FileException
@@ -78,7 +78,9 @@ class Converter
      */
     public function quality($quality)
     {
-        $this->quality = $quality;
+        if ($quality >= 0 && $quality <= 100) {
+            $this->quality = $quality;
+        }
         return $this;
     }
 

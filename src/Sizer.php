@@ -122,7 +122,7 @@ class Sizer extends Converter
     }
 
     /**
-     * Set source image for conversion or return the stored instance
+     * Set source image or return the stored instance
      * @param null|string|resource $image
      * @return resource|self
      * @throws FileException

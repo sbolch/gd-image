@@ -28,62 +28,91 @@ of the Composer documentation.
 ```php
 <?php
   // ...
-  use ShadeSoft\GDImage\Service\ImageConverter;
+  use ShadeSoft\GDImage\Converter;
   // ...
   class Demo {
     public function demo() {
       $img = 'path/to/image.png';
 
-      $converter = new ImageConverter;
-      $converter->convert($img, 'jpg', 'path/to/converted-image.jpg');
+      $converter = new Converter;
+      $converter
+        ->image($img)
+        ->toJpg()
+        ->target('path/to/converted-image.jpg')
+        ->save();
     }
   }
 ```
 
-#### Parameters
+#### Available functions
 
-- $img: path to image file
-- $outputFormat: "jpeg" | "jpg" | "png" | "gif" | "bmp" | "webp"
-- $targetPath: desired path of the converted image file
-- $quality: null | integer - quality percentage for jpg and webp, compression level for png (-1-9), unusable with gif and bmp
+- `image ( string | resource $image ) : self`
+
+  Set source image from file path or image resource
+
+- `target ( string $path ) : self`
+
+  Set target path
+
+- `quality ( int quality ) : self`
+
+  Set output quality - accepted value is a percentage
+
+- `toBmp() | toGif() | toJpg() | toJpeg() | toPng() | toWebp() : self`
+
+  Set output format
+
+- `save() : string`
+
+  Save generated image
 
 ### ImageSizer
 
 ```php
 <?php
   // ...
-  use ShadeSoft\GDImage\Service\ImageSizer;
+  use ShadeSoft\GDImage\Sizer;
   // ...
   class Demo {
     public function demo() {
       $img = 'path/to/image.jpg';
 
-      $sizer = new ImageSizer;
-      $sizer->thumbnail($img, 400, 300);
+      $sizer = new Sizer;
+      $sizer
+        ->image($img)
+        ->thumbnail(400, 300)
+        ->save();
     }
   }
 ```
-#### Parameters
-
-- $img: path to image file
-- $width | $height | $maxWidth | $maxHeight: dimenstions of the desired image
-- $outputFormat: null | "jpeg" | "jpg" | "png" | "gif" | "bmp" | "webp" - if null, it won't change
-- $targetPath: null | string - if null, $img will be used
-
 #### Available functions
 
-- `void widen($img, $width [, $outputFormat] [, $targetPath]])`
+**See available functions at Converter, all of them are available here, too**
 
-  Set an image to the given width while preserving its ratio
+- `image ( string | resource $image ) : self`
 
-- `void heighten($img, $height [, $outputFormat] [, $targetPath]])`
+  Set source image or return the stored instance
 
-  Set an image to the given height while preserving its ratio
+- `widen ( int $width ) : self`
 
-- `void maximize($img, $maxWidth, $maxHeight [, $outputFormat] [, $targetPath]])`
+  Set the image to the given width while preserving its ratio
 
-  Maximize image's size by its longest dimension while preserving its ratio
+- `heighten ( int $height ) : self`
 
-- `void thumbnail($img, $width, $height, [, $outputFormat] [, $targetPath]])`
+  Set the image to the given height while preserving its ratio
 
-  Make a thumbnail by cropping the image by its shortest dimension
+- `maximize ( int $width, int $height ) : self`
+
+  Maximize image's size by its longer dimension while preserving its ratio
+
+- `crop ( int $width, int $height [, int $x [, int $y]] ) : self`
+
+  Crop picture to given dimensions starting at the given position
+
+- `thumbnail ( int $width, int $height ) : self`
+
+  Make a thumbnail by cropping the image by its shorter dimension (centered crop)
+
+- `output() : void`
+
+  Print image to PHP output
