@@ -86,7 +86,8 @@ class Converter
     /**
      * Set transparency
      */
-    public function transparent() {
+    public function transparent()
+    {
         $this->transparency($this->img);
     }
 
