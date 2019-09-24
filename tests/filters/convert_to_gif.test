@@ -1,0 +1,8 @@
+--TEST--
+"convert_to_gif" filter
+--TEMPLATE--
+{{ "tests/img/test-horizontal.jpg"|convert_to_gif(testImg) }}
+--DATA--
+return array('testImg' => "tests/img/test.gif")
+--EXPECT--
+tests/img/test.gif
