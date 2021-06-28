@@ -8,7 +8,8 @@ use ShadeSoft\GDImage\Exception\MethodNotFoundException;
 use ShadeSoft\GDImage\Helper\File;
 use ShadeSoft\GDImage\Helper\Options;
 
-class Converter {
+class Converter
+{
     protected $img;
     protected $format;
     protected $path;
@@ -23,22 +24,23 @@ class Converter {
      * @return self
      * @throws MethodNotFoundException|FileInvalidTypeException
      */
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         $availableFormats = File::FORMATS;
 
-        if(strpos($method, 'to') !== 0) {
+        if (strpos($method, 'to') !== 0) {
             throw new MethodNotFoundException("Method \"$method\" is not implemented.");
         }
 
         $format = lcfirst(substr($method, 2));
 
-        if(!isset($availableFormats[$format])) {
+        if (!isset($availableFormats[$format])) {
             throw new FileInvalidTypeException("Not supported image type \"$format\".");
         }
 
         $this->format = $availableFormats[$format];
 
-        if(isset($args[0]) && $args[0] != null) {
+        if (isset($args[0]) && $args[0] != null) {
             $this->quality($args[0]);
         }
 
@@ -50,8 +52,9 @@ class Converter {
      * @param int $quality
      * @return self
      */
-    public function quality($quality) {
-        if($quality >= 0 && $quality <= 100) {
+    public function quality($quality)
+    {
+        if ($quality >= 0 && $quality <= 100) {
             $this->quality = $quality;
         }
 
@@ -65,7 +68,8 @@ class Converter {
      * @param int $blue
      * @return self
      */
-    public function background($red, $green, $blue) {
+    public function background($red, $green, $blue)
+    {
         $this->background = [
             'red'   => $red,
             'green' => $green,
@@ -81,10 +85,11 @@ class Converter {
      * @return self
      * @throws FileException
      */
-    public function image($image) {
+    public function image($image)
+    {
         $this->img = gettype($image) == 'resource' ? $image : File::get($image);
 
-        if(gettype($image) == 'string') {
+        if (gettype($image) == 'string') {
             $this->path = $image;
             $this->format = $this->originalFormat = File::getType($image);
         }
@@ -97,7 +102,8 @@ class Converter {
      * @param string $path
      * @return self
      */
-    public function target($path) {
+    public function target($path)
+    {
         $this->path = $path;
 
         return $this;
@@ -108,11 +114,12 @@ class Converter {
      * @return string
      * @throws FileInvalidTypeException
      */
-    public function save() {
-        if(in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
-            if($this->background) {
+    public function save()
+    {
+        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
+            if ($this->background) {
                 Options::background($this->img, $this->background);
-            } elseif(in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
+            } elseif (in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
                 Options::transparency($this->img, $this->format);
             }
         }
@@ -126,11 +133,12 @@ class Converter {
      * Print image to PHP output
      * @throws FileInvalidTypeException
      */
-    public function output() {
-        if(in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
-            if($this->background) {
+    public function output()
+    {
+        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])) {
+            if ($this->background) {
                 Options::background($this->img, $this->background);
-            } elseif(in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
+            } elseif (in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
                 Options::transparency($this->img, $this->format);
             }
         }

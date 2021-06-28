@@ -4,5 +4,6 @@ namespace ShadeSoft\GDImage\Exception;
 
 use Exception;
 
-class MethodNotFoundException extends Exception {
+class MethodNotFoundException extends Exception
+{
 }
