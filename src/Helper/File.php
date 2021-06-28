@@ -5,49 +5,33 @@ namespace ShadeSoft\GDImage\Helper;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
-class File
-{
-    const BMP     = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
-    const GIF     = 'image/gif';
-    const JPG     = 'image/jpeg';
-    const PNG     = 'image/png';
-    const WEBP    = 'image/webp';
+class File {
+    const BMP = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
+    const GIF = 'image/gif';
+    const JPG = 'image/jpeg';
+    const PNG = 'image/png';
+    const WEBP = 'image/webp';
     const FORMATS = [
         'bmp'  => self::BMP,
         'gif'  => self::GIF,
         'jpg'  => self::JPG,
         'jpeg' => self::JPG,
         'png'  => self::PNG,
-        'webp' => self::WEBP
+        'webp' => self::WEBP,
     ];
-
-    /**
-     * Get and return PHP's getimagesize data
-     * @param string $path
-     * @return array
-     * @throws FileNotFoundException
-     */
-    public static function getSize($path)
-    {
-        if (!file_exists($path) || is_dir($path)) {
-            throw new FileNotFoundException('Image not found');
-        }
-
-        return getimagesize($path);
-    }
 
     /**
      * Get image type based on given format or mime info
      * @param null|string $outputFormat - if null, mime info is used
      * @param null|array $imgInfo
      * @return string
+     * @throws FileNotFoundException
      */
-    public static function getType($path, $outputFormat = null, array $imgInfo = null)
-    {
-        $imgInfo          = $imgInfo ?: self::getSize($path);
+    public static function getType($path, $outputFormat = null, array $imgInfo = null) {
+        $imgInfo = $imgInfo ?: self::getSize($path);
         $availableFormats = self::FORMATS;
 
-        if ($outputFormat) {
+        if($outputFormat) {
             $type = isset($availableFormats[$outputFormat])
                 ? $availableFormats[$outputFormat]
                 : self::JPG;
@@ -59,17 +43,30 @@ class File
     }
 
     /**
+     * Get and return PHP's getimagesize data
+     * @param string $path
+     * @return array
+     * @throws FileNotFoundException
+     */
+    public static function getSize($path) {
+        if(!file_exists($path) || is_dir($path)) {
+            throw new FileNotFoundException('Image not found.');
+        }
+
+        return getimagesize($path);
+    }
+
+    /**
      * Make and return an image resource from file
      * @param string $path
      * @param array $info
      * @return resource
-     * @throws FileInvalidTypeException
+     * @throws FileNotFoundException|FileInvalidTypeException
      */
-    public static function get($path, array $info = null)
-    {
+    public static function get($path, array $info = null) {
         $info = $info ?: self::getSize($path);
 
-        switch ($info['mime']) {
+        switch($info['mime']) {
             case self::JPG:
                 $srcImg = imagecreatefromjpeg($path);
                 break;
@@ -80,7 +77,7 @@ class File
                 $srcImg = imagecreatefromgif($path);
                 break;
             case self::BMP:
-                if (PHP_VERSION_ID < 70200) {
+                if(PHP_VERSION_ID < 70200) {
                     throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
                 }
                 $srcImg = imagecreatefrombmp($path);
@@ -103,12 +100,11 @@ class File
      * @param null|int $quality
      * @throws FileInvalidTypeException
      */
-    public static function save($path, $img, $type = self::JPG, $quality = null)
-    {
+    public static function save($path, $img, $type = self::JPG, $quality = null) {
         $dir = explode('/', $path);
         unset($dir[count($dir) - 1]);
         $dir = implode('/', $dir);
-        if ($dir && (!file_exists($dir) || !is_dir($dir))) {
+        if($dir && (!file_exists($dir) || !is_dir($dir))) {
             mkdir($dir, 0777, true);
         }
 
@@ -116,38 +112,24 @@ class File
     }
 
     /**
-     * Print image to PHP output
+     * @throws FileInvalidTypeException
      */
-    public static function printToOutput($img, $type = self::JPG, $quality = null)
-    {
-        self::output('php://output', $img, $type, $quality);
-    }
-
-    /**
-     * Clean (destroy) given (by reference) image resources
-     * @param array $imgs
-     */
-    public static function clean(array $imgs)
-    {
-        foreach ($imgs as &$img) {
-            imagedestroy($img);
-        }
-    }
-
-    private static function output($path, $img, $type, $quality)
-    {
-        switch ($type) {
+    private static function output($path, $img, $type, $quality) {
+        switch($type) {
             case self::PNG:
-                @imagepng($img, $path, $quality
-                    ? ($quality >= 10 ? floor($quality / 10 - 1) : 0)
-                    : -1
+                @imagepng(
+                    $img,
+                    $path,
+                    $quality
+                        ? ($quality >= 10 ? floor($quality / 10 - 1) : 0)
+                        : -1
                 );
                 break;
             case self::GIF:
                 @imagegif($img, $path);
                 break;
             case self::BMP:
-                if (PHP_VERSION_ID < 70200) {
+                if(PHP_VERSION_ID < 70200) {
                     throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
                 }
                 @imagebmp($img, $path);
@@ -158,6 +140,24 @@ class File
             case self::JPG:
             default:
                 @imagejpeg($img, $path, $quality ?: -1);
+        }
+    }
+
+    /**
+     * Print image to PHP output
+     * @throws FileInvalidTypeException
+     */
+    public static function printToOutput($img, $type = self::JPG, $quality = null) {
+        self::output('php://output', $img, $type, $quality);
+    }
+
+    /**
+     * Clean (destroy) given (by reference) image resources
+     * @param array $imgs
+     */
+    public static function clean(array $imgs) {
+        foreach($imgs as $img) {
+            imagedestroy($img);
         }
     }
 }

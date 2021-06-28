@@ -6,42 +6,7 @@ use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Helper\File;
 use ShadeSoft\GDImage\Helper\Options;
 
-class Sizer extends Converter
-{
-
-    /**
-     * Set the image to the given width while preserving its ratio
-     * @param int $width
-     * @return self
-     */
-    public function widen($width)
-    {
-        list($ow, $oh) = $this->getDimensions();
-
-        if ($width != $ow) {
-            $height = round(($width / $ow) * $oh);
-            $this->img = $this->resample($width, $height, $ow, $oh);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set the image to the given height while preserving its ratio
-     * @param int $height
-     * @return self
-     */
-    public function heighten($height)
-    {
-        list($ow, $oh) = $this->getDimensions();
-
-        if ($height != $oh) {
-            $width = round(($height / $oh) * $ow);
-            $this->img = $this->resample($width, $height, $ow, $oh);
-        }
-
-        return $this;
-    }
+class Sizer extends Converter {
 
     /**
      * Maximize image's size by its longer dimension while preserving its ratio
@@ -49,12 +14,11 @@ class Sizer extends Converter
      * @param int $height
      * @return self
      */
-    public function maximize($width, $height)
-    {
+    public function maximize($width, $height) {
         list($ow, $oh) = $this->getDimensions();
 
-        if ($width < $ow || $height < $oh) {
-            if ($ow >= $oh) {
+        if($width < $ow || $height < $oh) {
+            if($ow >= $oh) {
                 $nw = $width;
                 $nh = floor(($nw / $ow) * $oh);
             } else {
@@ -62,13 +26,70 @@ class Sizer extends Converter
                 $nw = floor(($nh / $oh) * $ow);
             }
 
-            if ($nw > $width) {
+            if($nw > $width) {
                 return $this->widen($width);
-            } elseif ($nh > $height) {
+            } elseif($nh > $height) {
                 return $this->heighten($height);
             }
 
             $this->img = $this->resample($nw, $nh, $ow, $oh);
+        }
+
+        return $this;
+    }
+
+    private function getDimensions() {
+        return [imagesx($this->img), imagesy($this->img)];
+    }
+
+    /**
+     * Set the image to the given width while preserving its ratio
+     * @param int $width
+     * @return self
+     */
+    public function widen($width) {
+        list($ow, $oh) = $this->getDimensions();
+
+        if($width != $ow) {
+            $height = round(($width / $ow) * $oh);
+            $this->img = $this->resample($width, $height, $ow, $oh);
+        }
+
+        return $this;
+    }
+
+    private function resample($nw, $nh, $ow, $oh) {
+        return $this->copy($nw, $nh, $ow, $oh, 0, 0, true);
+    }
+
+    private function copy($nw, $nh, $ow, $oh, $x = 0, $y = 0, $resample = false) {
+        $dstImg = imagecreatetruecolor($nw, $nh);
+
+        if(in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])
+           && in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
+            Options::transparency($dstImg, $this->format);
+        }
+
+        if($resample) {
+            imagecopyresampled($dstImg, $this->img, 0, 0, $x, $y, $nw, $nh, $ow, $oh);
+        } else {
+            imagecopy($dstImg, $this->img, 0, 0, $x, $y, $ow, $oh);
+        }
+
+        return $dstImg;
+    }
+
+    /**
+     * Set the image to the given height while preserving its ratio
+     * @param int $height
+     * @return self
+     */
+    public function heighten($height) {
+        list($ow, $oh) = $this->getDimensions();
+
+        if($height != $oh) {
+            $width = round(($height / $oh) * $ow);
+            $this->img = $this->resample($width, $height, $ow, $oh);
         }
 
         return $this;
@@ -82,8 +103,7 @@ class Sizer extends Converter
      * @param int $y
      * @return self
      */
-    public function crop($width, $height, $x = 0, $y = 0)
-    {
+    public function crop($width, $height, $x = 0, $y = 0) {
         list($ow, $oh) = $this->getDimensions();
 
         $this->img = $this->copy($width, $height, $ow, $oh, $x, $y);
@@ -97,14 +117,13 @@ class Sizer extends Converter
      * @param int $height
      * @return self
      */
-    public function thumbnail($width, $height)
-    {
+    public function thumbnail($width, $height) {
         list($ow, $oh) = $this->getDimensions();
 
         $or = $ow / $oh;
         $nr = $width / $height;
 
-        if ($nr >= $or) {
+        if($nr >= $or) {
             $nw = $width;
             $nh = round($nw / $or);
         } else {
@@ -113,7 +132,11 @@ class Sizer extends Converter
         }
 
         $this->img = $this->resample($nw, $nh, $ow, $oh);
-        $this->img = $this->copy($width, $height, $width, $height,
+        $this->img = $this->copy(
+            $width,
+            $height,
+            $width,
+            $height,
             round(($nw - $width) / 2),
             round(($nh - $height) / 2)
         );
@@ -128,53 +151,11 @@ class Sizer extends Converter
      * @throws FileException
      * @see Converter::image()
      */
-    public function image($image = null)
-    {
-        if (!$image) {
+    public function image($image = null) {
+        if(!$image) {
             return $this->img;
         }
 
         return parent::image($image);
-    }
-
-    /**
-     * Print image to PHP output
-     */
-    public function output()
-    {
-        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])
-            && in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
-            Options::transparency($this->img, $this->format);
-        }
-
-        File::printToOutput($this->img, $this->format, $this->quality);
-    }
-
-    private function resample($nw, $nh, $ow, $oh)
-    {
-        return $this->copy($nw, $nh, $ow, $oh, 0, 0, true);
-    }
-
-    private function copy($nw, $nh, $ow, $oh, $x = 0, $y = 0, $resample = false)
-    {
-        $dstImg = imagecreatetruecolor($nw, $nh);
-
-        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])
-            && in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
-            Options::transparency($dstImg, $this->format);
-        }
-
-        if ($resample) {
-            imagecopyresampled($dstImg, $this->img, 0, 0, $x, $y, $nw, $nh, $ow, $oh);
-        } else {
-            imagecopy($dstImg, $this->img, 0, 0, $x, $y, $ow, $oh);
-        }
-
-        return $dstImg;
-    }
-
-    private function getDimensions()
-    {
-        return [imagesx($this->img), imagesy($this->img)];
     }
 }

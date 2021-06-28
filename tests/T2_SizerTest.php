@@ -3,26 +3,23 @@
 use PHPUnit\Framework\TestCase;
 use ShadeSoft\GDImage\Sizer;
 
-final class T2_SizerTest extends TestCase
-{
+final class T2_SizerTest extends TestCase {
     private $sizer;
     private $imgs;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
+    public function __construct($name = null, array $data = [], $dataName = '') {
         parent::__construct($name, $data, $dataName);
 
-        $this->sizer   = new Sizer;
-        $this->imgs    = [
-            'horizontal' => __DIR__ . '/img/test-horizontal.jpg',
-            'vertical'   => __DIR__ . '/img/test-vertical.jpg',
-            'square'     => __DIR__ . '/img/test-square.jpg'
+        $this->sizer = new Sizer();
+        $this->imgs = [
+            'horizontal' => __DIR__.'/img/test-horizontal.jpg',
+            'vertical'   => __DIR__.'/img/test-vertical.jpg',
+            'square'     => __DIR__.'/img/test-square.jpg',
         ];
     }
 
-    public function testWiden()
-    {
-        foreach ($this->imgs as $type => $img) {
+    public function testWiden() {
+        foreach($this->imgs as $type => $img) {
             $testImg = $this->sizer
                 ->image($img)
                 ->widen(2)
@@ -32,9 +29,8 @@ final class T2_SizerTest extends TestCase
         }
     }
 
-    public function testHeighten()
-    {
-        foreach ($this->imgs as $type => $img) {
+    public function testHeighten() {
+        foreach($this->imgs as $type => $img) {
             $testImg = $this->sizer
                 ->image($img)
                 ->heighten(2)
@@ -44,33 +40,37 @@ final class T2_SizerTest extends TestCase
         }
     }
 
-    public function testMaximize()
-    {
+    public function testMaximize() {
         $sizes = [
             [20, 20],
             [2, 20],
             [20, 2],
-            [2, 2]
+            [2, 2],
         ];
 
-        foreach ($sizes as $size) {
-            foreach ($this->imgs as $type => $img) {
+        foreach($sizes as $size) {
+            foreach($this->imgs as $type => $img) {
                 $testImg = $this->sizer
                     ->image($img)
                     ->maximize($size[0], $size[1])
                     ->image();
 
-                $this->assertLessThanOrEqual($size[0], imagesx($testImg),
-                    "Maximize width fails if image is $type with max sizes {$size[0]} and {$size[1]}:");
-                $this->assertLessThanOrEqual($size[1], imagesy($testImg),
-                    "Maximize height fails if image is $type with max sizes {$size[0]} and {$size[1]}:");
+                $this->assertLessThanOrEqual(
+                    $size[0],
+                    imagesx($testImg),
+                    "Maximize width fails if image is $type with max sizes $size[0] and $size[1]:"
+                );
+                $this->assertLessThanOrEqual(
+                    $size[1],
+                    imagesy($testImg),
+                    "Maximize height fails if image is $type with max sizes $size[0] and $size[1]:"
+                );
             }
         }
     }
 
-    public function testCrop()
-    {
-        foreach ($this->imgs as $type => $img) {
+    public function testCrop() {
+        foreach($this->imgs as $type => $img) {
             $testImg = $this->sizer
                 ->image($img)
                 ->crop(2, 2)
@@ -81,9 +81,8 @@ final class T2_SizerTest extends TestCase
         }
     }
 
-    public function testThumbnail()
-    {
-        foreach ($this->imgs as $type => $img) {
+    public function testThumbnail() {
+        foreach($this->imgs as $type => $img) {
             $testImg = $this->sizer
                 ->image($img)
                 ->thumbnail(2, 2)

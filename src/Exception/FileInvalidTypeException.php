@@ -2,6 +2,5 @@
 
 namespace ShadeSoft\GDImage\Exception;
 
-class FileInvalidTypeException extends FileException
-{
+class FileInvalidTypeException extends FileException {
 }

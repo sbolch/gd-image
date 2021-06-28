@@ -5,23 +5,20 @@ use ShadeSoft\GDImage\Converter;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Helper\File;
 
-final class T1_ConverterTest extends TestCase
-{
+final class T1_ConverterTest extends TestCase {
     private $converter;
     private $img;
     private $testImg;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
+    public function __construct($name = null, array $data = [], $dataName = '') {
         parent::__construct($name, $data, $dataName);
 
-        $this->converter = new Converter;
-        $this->img       = __DIR__ . '/img/test-square.jpg';
-        $this->testImg   = __DIR__ . '/img/test';
+        $this->converter = new Converter();
+        $this->img = __DIR__.'/img/test-square.jpg';
+        $this->testImg = __DIR__.'/img/test';
     }
 
-    public function testBmp()
-    {
+    public function testBmp() {
         @unlink($this->testImg);
 
         $this->converter
@@ -29,23 +26,22 @@ final class T1_ConverterTest extends TestCase
             ->target($this->testImg)
             ->toBmp();
 
-        if (PHP_VERSION_ID < 70200) {
+        if(PHP_VERSION_ID < 70200) {
             try {
                 $this->converter->save();
                 $this->fail('Expected Exception has not been raised.');
-            } catch (FileInvalidTypeException $ex) {
-                $this->assertEquals($ex->getMessage(), 'Only supported in PHP 7.2 and above.');
+            } catch(FileInvalidTypeException $ex) {
+                $this->assertEquals('Only supported in PHP 7.2 and above.', $ex->getMessage());
             }
         } else {
             $this->converter->save();
-            $this->assertEquals(File::getType($this->testImg), File::BMP);
+            $this->assertEquals(File::BMP, File::getType($this->testImg));
         }
 
         @unlink($this->testImg);
     }
 
-    public function testGif()
-    {
+    public function testGif() {
         @unlink($this->testImg);
 
         $this->converter
@@ -54,12 +50,11 @@ final class T1_ConverterTest extends TestCase
             ->toGif()
             ->save();
 
-        $this->assertEquals(File::getType($this->testImg), File::GIF);
+        $this->assertEquals(File::GIF, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
-    public function testJpg()
-    {
+    public function testJpg() {
         @unlink($this->testImg);
 
         $this->converter
@@ -68,12 +63,11 @@ final class T1_ConverterTest extends TestCase
             ->toJpg()
             ->save();
 
-        $this->assertEquals(File::getType($this->testImg), File::JPG);
+        $this->assertEquals(File::JPG, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
-    public function testJpeg()
-    {
+    public function testJpeg() {
         @unlink($this->testImg);
 
         $this->converter
@@ -82,12 +76,11 @@ final class T1_ConverterTest extends TestCase
             ->toJpeg()
             ->save();
 
-        $this->assertEquals(File::getType($this->testImg), File::JPG);
+        $this->assertEquals(File::JPG, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
-    public function testPng()
-    {
+    public function testPng() {
         @unlink($this->testImg);
 
         $this->converter
@@ -96,13 +89,12 @@ final class T1_ConverterTest extends TestCase
             ->toPng()
             ->save();
 
-        $this->assertEquals(File::getType($this->testImg), File::PNG);
+        $this->assertEquals(File::PNG, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
-    public function testWebp()
-    {
-        if (function_exists('imagewebp')) {
+    public function testWebp() {
+        if(function_exists('imagewebp')) {
             @unlink($this->testImg);
 
             $this->converter
@@ -111,16 +103,13 @@ final class T1_ConverterTest extends TestCase
                 ->toWebp()
                 ->save();
 
-            $this->assertEquals(File::getType($this->testImg), File::WEBP);
+            $this->assertEquals(File::WEBP, File::getType($this->testImg));
             @unlink($this->testImg);
         }
     }
 
-    /**
-     * @expectedException ShadeSoft\GDImage\Exception\FileInvalidTypeException
-     */
-    public function testInvalid()
-    {
+    public function testInvalid() {
+        $this->expectException(FileInvalidTypeException::class);
         $this->converter->toInvalid();
     }
 }

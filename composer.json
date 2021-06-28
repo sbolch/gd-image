@@ -1,35 +1,41 @@
 {
-  "name": "shadesoft/gd-image",
-  "description": "An image editing package using PHP's GD library if other solutions fail for some reason.",
-  "keywords": ["image", "gd", "picture"],
-  "type": "package",
-  "license": "MIT",
-  "homepage": "https://github.com/ShadeSoft/GDImage",
-  "authors": [
-    {
-      "name": "Szabolcs Surányi",
-      "email": "szabolcs.suranyi@shadesoft.hu",
-      "homepage": "http://shadesoft.hu"
-    }
-  ],
-  "autoload": {
-    "psr-4": { "ShadeSoft\\GDImage\\": "src/" }
-  },
-  "require": {
-    "php": ">=5.6",
-    "ext-gd": "*"
-  },
-  "require-dev": {
-    "phpunit/phpunit": ">=5.7",
-    "symfony/var-dumper": ">=3.4",
-    "twig/twig": "^1.0|^2.0"
-  },
-  "suggest": {
-    "twig/twig": "Enables Twig filters"
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.x-dev"
-    }
-  }
+	"name": "shadesoft/gd-image",
+	"description": "An image editing package using PHP's GD library if other solutions fail for some reason.",
+	"keywords": [
+		"image",
+		"gd",
+		"picture"
+	],
+	"type": "package",
+	"license": "MIT",
+	"homepage": "https://github.com/ShadeSoft/GDImage",
+	"authors": [
+		{
+			"name": "Szabolcs Surányi",
+			"email": "szabolcs.suranyi@shadesoft.hu",
+			"homepage": "http://shadesoft.hu"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"ShadeSoft\\GDImage\\": "src/"
+		}
+	},
+	"require": {
+		"php": ">=5.6",
+		"ext-gd": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": ">=5.7",
+		"symfony/var-dumper": ">=3.4",
+		"twig/twig": "<3.0"
+	},
+	"suggest": {
+		"twig/twig": "Enables Twig filters"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.x-dev"
+		}
+	}
 }

@@ -10,20 +10,20 @@
 
 ## Installation
 
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
+Open a command console, enter your project directory and execute the following command to download the latest stable
+version of this bundle:
 
 ```console
 $ composer require shadesoft/gd-image
 ```
 
-This command requires you to have Composer installed globally, as explained
-in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
+This command requires you to have Composer installed globally, as explained in
+the [installation chapter](https://getcomposer.org/doc/00-intro.md)
 of the Composer documentation.
 
 ## Usage
 
-### ImageConverter
+### Image Converter
 
 ```php
 <?php
@@ -34,7 +34,7 @@ of the Composer documentation.
     public function demo() {
       $img = 'path/to/image.png';
 
-      $converter = new Converter;
+      $converter = new Converter();
       $converter
         ->image($img)
         ->toJpg()
@@ -58,6 +58,10 @@ of the Composer documentation.
 
   Set output quality - accepted value is a percentage
 
+- `background ( int red, int green, int blue ) : self`
+
+  Set background color instead of transparency - accepted values are integers between 0 and 255
+
 - `toBmp() | toGif() | toJpg() | toJpeg() | toPng() | toWebp() : self`
 
   Set output format
@@ -66,7 +70,11 @@ of the Composer documentation.
 
   Save generated image
 
-### ImageSizer
+- `output() : void`
+
+  Print image to PHP output
+
+### Image Sizer
 
 ```php
 <?php
@@ -77,7 +85,7 @@ of the Composer documentation.
     public function demo() {
       $img = 'path/to/image.jpg';
 
-      $sizer = new Sizer;
+      $sizer = new Sizer();
       $sizer
         ->image($img)
         ->thumbnail(400, 300)
@@ -85,6 +93,7 @@ of the Composer documentation.
     }
   }
 ```
+
 #### Available functions
 
 **See available functions at Converter, all of them are available here, too**
@@ -113,6 +122,25 @@ of the Composer documentation.
 
   Make a thumbnail by cropping the image by its shorter dimension (centered crop)
 
-- `output() : void`
+## Cached Image Sizer
 
-  Print image to PHP output
+Same as Image Sizer but it uses cache.
+
+```php
+<?php
+  // ...
+  use ShadeSoft\GDImage\CachedSizer;
+  // ...
+  class Demo {
+    public function demo() {
+      $img = 'path/to/image.jpg';
+
+      $sizer = new CachedSizer();
+      $sizer
+        ->image($img)
+        ->thumbnail(400, 300)
+        ->save();
+    }
+  }
+```
+
