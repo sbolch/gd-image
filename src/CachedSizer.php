@@ -2,13 +2,15 @@
 
 namespace ShadeSoft\GDImage;
 
-class CachedSizer extends Sizer {
+class CachedSizer extends Sizer
+{
 
     /**
      * @see Sizer::widen()
      */
-    public function widen($width) {
-        if($this->path && file_exists($this->path)) {
+    public function widen($width)
+    {
+        if ($this->path && file_exists($this->path)) {
             return $this;
         }
 
@@ -18,8 +20,9 @@ class CachedSizer extends Sizer {
     /**
      * @see Sizer::heighten()
      */
-    public function heighten($height) {
-        if($this->path && file_exists($this->path)) {
+    public function heighten($height)
+    {
+        if ($this->path && file_exists($this->path)) {
             return $this;
         }
 
@@ -29,8 +32,9 @@ class CachedSizer extends Sizer {
     /**
      * @see Sizer::maximize()
      */
-    public function maximize($width, $height) {
-        if($this->path && file_exists($this->path)) {
+    public function maximize($width, $height)
+    {
+        if ($this->path && file_exists($this->path)) {
             return $this;
         }
 
@@ -40,8 +44,9 @@ class CachedSizer extends Sizer {
     /**
      * @see Sizer::thumbnail()
      */
-    public function thumbnail($width, $height) {
-        if($this->path && file_exists($this->path)) {
+    public function thumbnail($width, $height)
+    {
+        if ($this->path && file_exists($this->path)) {
             return $this;
         }
 

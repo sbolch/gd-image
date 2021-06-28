@@ -9,19 +9,22 @@ use ShadeSoft\GDImage\Helper\File;
 use Twig_Extension;
 use Twig_SimpleFilter;
 
-class ConverterExtension extends Twig_Extension {
+class ConverterExtension extends Twig_Extension
+{
     private $converter;
     private $docroot;
 
-    public function __construct(Converter $converter) {
+    public function __construct(Converter $converter)
+    {
         $this->converter = $converter;
         $this->docroot = $_SERVER['DOCUMENT_ROOT'];
     }
 
-    public function getFilters() {
+    public function getFilters()
+    {
         $filters = [];
 
-        foreach(array_keys(File::FORMATS) as $format) {
+        foreach (array_keys(File::FORMATS) as $format) {
             $filters[] = new Twig_SimpleFilter("convert_to_$format", [$this, 'to'.ucfirst($format)]);
         }
 
@@ -38,8 +41,9 @@ class ConverterExtension extends Twig_Extension {
      * @return string
      * @throws MethodNotFoundException|FileException
      */
-    public function __call($method, $args) {
-        if(strpos($method, 'to') === 0) {
+    public function __call($method, $args)
+    {
+        if (strpos($method, 'to') === 0) {
             throw new MethodNotFoundException("");
         }
 
@@ -52,11 +56,13 @@ class ConverterExtension extends Twig_Extension {
             ->save();
     }
 
-    private function absPath($path) {
+    private function absPath($path)
+    {
         return $this->docroot.$path;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'shadesoft_gd_converter';
     }
 }
