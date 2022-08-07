@@ -116,6 +116,30 @@ final class T1_ConverterTest extends TestCase
         }
     }
 
+    public function testAvif()
+    {
+        @unlink($this->testImg);
+
+        $this->converter
+            ->image($this->img)
+            ->target($this->testImg)
+            ->toAvif();
+
+        if (PHP_VERSION_ID < 80100) {
+            try {
+                $this->converter->save();
+                $this->fail('Expected Exception has not been raised.');
+            } catch (FileInvalidTypeException $ex) {
+                $this->assertEquals('Only supported in PHP 8.1 and above.', $ex->getMessage());
+            }
+        } else {
+            $this->converter->save();
+            $this->assertEquals(File::AVIF, File::getType($this->testImg));
+        }
+
+        @unlink($this->testImg);
+    }
+
     public function testInvalid()
     {
         $this->expectException(FileInvalidTypeException::class);

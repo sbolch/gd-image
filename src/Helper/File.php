@@ -7,12 +7,14 @@ use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
 class File
 {
+    const AVIF = 'image/avif';
     const BMP = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
     const GIF = 'image/gif';
     const JPG = 'image/jpeg';
     const PNG = 'image/png';
     const WEBP = 'image/webp';
     const FORMATS = [
+        'avif'  => self::AVIF,
         'bmp'  => self::BMP,
         'gif'  => self::GIF,
         'jpg'  => self::JPG,
@@ -89,6 +91,12 @@ class File
             case self::WEBP:
                 $srcImg = imagecreatefromwebp($path);
                 break;
+            case self::AVIF:
+                if (PHP_VERSION_ID < 80100) {
+                    throw new FileInvalidTypeException('Only supported in PHP 8.1 and above');
+                }
+                $srcImg = imagecreatefromavif($path);
+                break;
             default:
                 throw new FileInvalidTypeException('Not supported image type.');
         }
@@ -142,6 +150,12 @@ class File
                 break;
             case self::WEBP:
                 @imagewebp($img, $path, $quality ?: 80);
+                break;
+            case self::AVIF:
+                if (PHP_VERSION_ID < 80100) {
+                    throw new FileInvalidTypeException('Only supported in PHP 8.1 and above.');
+                }
+                @imageavif($img, $path, $quality ?: -1);
                 break;
             case self::JPG:
             default:

@@ -61,7 +61,7 @@ of the Composer documentation.
 
   Set background color instead of transparency - accepted values are integers between 0 and 255
 
-- `toBmp() | toGif() | toJpg() | toJpeg() | toPng() | toWebp() : self`
+- `toAvif() | toBmp() | toGif() | toJpg() | toJpeg() | toPng() | toWebp() : self`
 
   Set output format
 
