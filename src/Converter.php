@@ -2,33 +2,41 @@
 
 namespace ShadeSoft\GDImage;
 
+use GdImage;
 use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Exception\MethodNotFoundException;
 use ShadeSoft\GDImage\Helper\File;
 use ShadeSoft\GDImage\Helper\Options;
 
+/**
+ * @method self toAvif()
+ * @method self toBmp()
+ * @method self toGif()
+ * @method self toJpg()
+ * @method self toJpeg()
+ * @method self toPng()
+ * @method self toWebp()
+ */
 class Converter
 {
-    protected $img;
-    protected $format;
-    protected $path;
-    protected $quality;
-    protected $background;
-    protected $originalFormat;
+    protected GdImage $img;
+    protected string $format;
+    protected string $path;
+    protected ?int $quality = null;
+    protected array $background;
+    protected string $originalFormat;
 
     /**
      * Resolve magic calls to set output format
-     * @param string $method
      * @param array $args - First argument is quality percent as integer
-     * @return self
      * @throws MethodNotFoundException|FileInvalidTypeException
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args): self
     {
         $availableFormats = File::FORMATS;
 
-        if (strpos($method, 'to') !== 0) {
+        if (!str_starts_with($method, 'to')) {
             throw new MethodNotFoundException("Method \"$method\" is not implemented.");
         }
 
@@ -49,10 +57,8 @@ class Converter
 
     /**
      * Set output quality
-     * @param int $quality
-     * @return self
      */
-    public function quality($quality)
+    public function quality(int $quality): self
     {
         if ($quality >= 0 && $quality <= 101) {
             $this->quality = $quality;
@@ -63,12 +69,8 @@ class Converter
 
     /**
      * Set background color instead of trancparency
-     * @param int $red
-     * @param int $green
-     * @param int $blue
-     * @return self
      */
-    public function background($red, $green, $blue)
+    public function background(int $red, int $green, int $blue): self
     {
         $this->background = [
             'red'   => $red,
@@ -81,13 +83,11 @@ class Converter
 
     /**
      * Set source image
-     * @param string|resource $image
-     * @return self
      * @throws FileException
      */
-    public function image($image)
+    public function image(string|GdImage $image): self
     {
-        $this->img = gettype($image) == 'resource' ? $image : File::get($image);
+        $this->img = $image instanceof GdImage ? $image : File::get($image);
 
         if (gettype($image) == 'string') {
             $this->path = $image;
@@ -99,10 +99,8 @@ class Converter
 
     /**
      * Set target path
-     * @param string $path
-     * @return self
      */
-    public function target($path)
+    public function target(string $path): self
     {
         $this->path = $path;
 
@@ -111,10 +109,9 @@ class Converter
 
     /**
      * Save generated image
-     * @return string
      * @throws FileInvalidTypeException
      */
-    public function save()
+    public function save(): string
     {
         if (in_array($this->originalFormat, [File::AVIF, File::PNG, File::GIF, File::WEBP])) {
             if ($this->background) {
@@ -133,7 +130,7 @@ class Converter
      * Print image to PHP output
      * @throws FileInvalidTypeException
      */
-    public function output()
+    public function output(): void
     {
         if (in_array($this->originalFormat, [File::AVIF, File::PNG, File::GIF, File::WEBP])) {
             if ($this->background) {

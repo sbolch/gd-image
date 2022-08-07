@@ -2,14 +2,12 @@
 
 namespace ShadeSoft\GDImage\Helper;
 
+use GdImage;
+
 class Options
 {
 
-    /**
-     * @param resource $img
-     * @param string $format
-     */
-    public static function transparency($img, $format)
+    public static function transparency(GdImage $img, string $format): void
     {
         if ($format == File::GIF) {
             $transparent = imagecolorallocatealpha($img, 0, 0, 0, 127);
@@ -23,10 +21,9 @@ class Options
     }
 
     /**
-     * @param resource $img
      * @param int[] $color
      */
-    public static function background($img, $color)
+    public static function background(GdImage $img, array $color): void
     {
         imagefill($img, 0, 0, imagecolorallocate($img, $color['red'], $color['green'], $color['blue']));
     }

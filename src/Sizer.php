@@ -2,6 +2,7 @@
 
 namespace ShadeSoft\GDImage;
 
+use GdImage;
 use ShadeSoft\GDImage\Exception\FileException;
 use ShadeSoft\GDImage\Helper\File;
 use ShadeSoft\GDImage\Helper\Options;
@@ -11,13 +12,10 @@ class Sizer extends Converter
 
     /**
      * Maximize image's size by its longer dimension while preserving its ratio
-     * @param int $width
-     * @param int $height
-     * @return self
      */
-    public function maximize($width, $height)
+    public function maximize(int $width, int $height): self
     {
-        list($ow, $oh) = $this->getDimensions();
+        [$ow, $oh] = $this->getDimensions();
 
         if ($width < $ow || $height < $oh) {
             if ($ow >= $oh) {
@@ -40,19 +38,17 @@ class Sizer extends Converter
         return $this;
     }
 
-    private function getDimensions()
+    private function getDimensions(): array
     {
         return [imagesx($this->img), imagesy($this->img)];
     }
 
     /**
      * Set the image to the given width while preserving its ratio
-     * @param int $width
-     * @return self
      */
-    public function widen($width)
+    public function widen(int $width): self
     {
-        list($ow, $oh) = $this->getDimensions();
+        [$ow, $oh] = $this->getDimensions();
 
         if ($width != $ow) {
             $height = round(($width / $ow) * $oh);
@@ -62,12 +58,12 @@ class Sizer extends Converter
         return $this;
     }
 
-    private function resample($nw, $nh, $ow, $oh)
+    private function resample(int $nw, int $nh, int $ow, int $oh): GdImage|bool
     {
         return $this->copy($nw, $nh, $ow, $oh, 0, 0, true);
     }
 
-    private function copy($nw, $nh, $ow, $oh, $x = 0, $y = 0, $resample = false)
+    private function copy(int $nw, int $nh, int $ow, int $oh, int $x = 0, int $y = 0, bool $resample = false): GdImage|bool
     {
         $dstImg = imagecreatetruecolor($nw, $nh);
 
@@ -87,12 +83,10 @@ class Sizer extends Converter
 
     /**
      * Set the image to the given height while preserving its ratio
-     * @param int $height
-     * @return self
      */
-    public function heighten($height)
+    public function heighten(int $height): self
     {
-        list($ow, $oh) = $this->getDimensions();
+        [$ow, $oh] = $this->getDimensions();
 
         if ($height != $oh) {
             $width = round(($height / $oh) * $ow);
@@ -104,15 +98,10 @@ class Sizer extends Converter
 
     /**
      * Crop picture to given dimensions starting at the given position
-     * @param int $width
-     * @param int $height
-     * @param int $x
-     * @param int $y
-     * @return self
      */
-    public function crop($width, $height, $x = 0, $y = 0)
+    public function crop(int $width, int $height, int $x = 0, int $y = 0): self
     {
-        list($ow, $oh) = $this->getDimensions();
+        [$ow, $oh] = $this->getDimensions();
 
         $this->img = $this->copy($width, $height, $ow, $oh, $x, $y);
 
@@ -121,13 +110,10 @@ class Sizer extends Converter
 
     /**
      * Make a thumbnail by cropping the image by its shorter dimension (centered crop)
-     * @param int $width
-     * @param int $height
-     * @return self
      */
-    public function thumbnail($width, $height)
+    public function thumbnail(int $width, int $height): self
     {
-        list($ow, $oh) = $this->getDimensions();
+        [$ow, $oh] = $this->getDimensions();
 
         $or = $ow / $oh;
         $nr = $width / $height;
@@ -154,18 +140,20 @@ class Sizer extends Converter
     }
 
     /**
-     * Set source image or return the stored instance
-     * @param null|string|resource $image
-     * @return resource|self
+     * Set source image
      * @throws FileException
      * @see Converter::image()
      */
-    public function image($image = null)
+    public function image(string|GdImage $image): self
     {
-        if (!$image) {
-            return $this->img;
-        }
-
         return parent::image($image);
+    }
+
+    /**
+     * Return the stored instance
+     */
+    public function instance(): GdImage
+    {
+        return $this->img;
     }
 }

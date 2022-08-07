@@ -5,8 +5,8 @@ use ShadeSoft\GDImage\Sizer;
 
 final class T2_SizerTest extends TestCase
 {
-    private $sizer;
-    private $imgs;
+    private Sizer $sizer;
+    private array $imgs;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -26,7 +26,7 @@ final class T2_SizerTest extends TestCase
             $testImg = $this->sizer
                 ->image($img)
                 ->widen(2)
-                ->image();
+                ->instance();
 
             $this->assertEquals(2, imagesx($testImg), "Widen fails if image is $type:");
         }
@@ -38,7 +38,7 @@ final class T2_SizerTest extends TestCase
             $testImg = $this->sizer
                 ->image($img)
                 ->heighten(2)
-                ->image();
+                ->instance();
 
             $this->assertEquals(2, imagesy($testImg), "Heighten fails if image is $type:");
         }
@@ -58,7 +58,7 @@ final class T2_SizerTest extends TestCase
                 $testImg = $this->sizer
                     ->image($img)
                     ->maximize($size[0], $size[1])
-                    ->image();
+                    ->instance();
 
                 $this->assertLessThanOrEqual(
                     $size[0],
@@ -80,7 +80,7 @@ final class T2_SizerTest extends TestCase
             $testImg = $this->sizer
                 ->image($img)
                 ->crop(2, 2)
-                ->image();
+                ->instance();
 
             $this->assertEquals(2, imagesy($testImg), "Crop width fails if image is $type:");
             $this->assertEquals(2, imagesy($testImg), "Crop height fails if image is $type:");
@@ -93,7 +93,7 @@ final class T2_SizerTest extends TestCase
             $testImg = $this->sizer
                 ->image($img)
                 ->thumbnail(2, 2)
-                ->image();
+                ->instance();
 
             $this->assertEquals(2, imagesx($testImg), "Thumbnail width fails if image is $type:");
             $this->assertEquals(2, imagesy($testImg), "Thumbnail height fails if image is $type:");

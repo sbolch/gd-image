@@ -7,9 +7,9 @@ use ShadeSoft\GDImage\Helper\File;
 
 final class T1_ConverterTest extends TestCase
 {
-    private $converter;
-    private $img;
-    private $testImg;
+    private Converter $converter;
+    private string $img;
+    private string $testImg;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {

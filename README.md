@@ -45,7 +45,7 @@ of the Composer documentation.
 
 #### Available functions
 
-- `image ( string | resource $image ) : self`
+- `image ( string | GdImage $image ) : self`
 
   Set source image from file path or image resource
 
@@ -97,9 +97,13 @@ of the Composer documentation.
 
 **See available functions at Converter, all of them are available here, too**
 
-- `image ( string | resource $image ) : self`
+- `image ( string | GdImage $image ) : self`
 
-  Set source image or return the stored instance
+  Set source image from file path or image resource
+
+- `instance(): GdImage`
+
+  Return current image resource
 
 - `widen ( int $width ) : self`
 

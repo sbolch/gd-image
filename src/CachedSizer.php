@@ -8,7 +8,7 @@ class CachedSizer extends Sizer
     /**
      * @see Sizer::widen()
      */
-    public function widen($width)
+    public function widen(int $width): self
     {
         if ($this->path && file_exists($this->path)) {
             return $this;
@@ -20,7 +20,7 @@ class CachedSizer extends Sizer
     /**
      * @see Sizer::heighten()
      */
-    public function heighten($height)
+    public function heighten(int $height): self
     {
         if ($this->path && file_exists($this->path)) {
             return $this;
@@ -32,7 +32,7 @@ class CachedSizer extends Sizer
     /**
      * @see Sizer::maximize()
      */
-    public function maximize($width, $height)
+    public function maximize(int $width, int $height): self
     {
         if ($this->path && file_exists($this->path)) {
             return $this;
@@ -44,7 +44,7 @@ class CachedSizer extends Sizer
     /**
      * @see Sizer::thumbnail()
      */
-    public function thumbnail($width, $height)
+    public function thumbnail(int $width, int $height): self
     {
         if ($this->path && file_exists($this->path)) {
             return $this;

@@ -2,18 +2,19 @@
 
 namespace ShadeSoft\GDImage\Helper;
 
+use GdImage;
 use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
 use ShadeSoft\GDImage\Exception\FileNotFoundException;
 
 class File
 {
-    const AVIF = 'image/avif';
-    const BMP = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
-    const GIF = 'image/gif';
-    const JPG = 'image/jpeg';
-    const PNG = 'image/png';
-    const WEBP = 'image/webp';
-    const FORMATS = [
+    public const AVIF = 'image/avif';
+    public const BMP = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
+    public const GIF = 'image/gif';
+    public const JPG = 'image/jpeg';
+    public const PNG = 'image/png';
+    public const WEBP = 'image/webp';
+    public const FORMATS = [
         'avif'  => self::AVIF,
         'bmp'  => self::BMP,
         'gif'  => self::GIF,
@@ -25,20 +26,15 @@ class File
 
     /**
      * Get image type based on given format or mime info
-     * @param null|string $outputFormat - if null, mime info is used
-     * @param null|array $imgInfo
-     * @return string
      * @throws FileNotFoundException
      */
-    public static function getType($path, $outputFormat = null, array $imgInfo = null)
+    public static function getType(string $path, ?string $outputFormat = null, ?array $imgInfo = null): string
     {
         $imgInfo = $imgInfo ?: self::getSize($path);
         $availableFormats = self::FORMATS;
 
         if ($outputFormat) {
-            $type = isset($availableFormats[$outputFormat])
-                ? $availableFormats[$outputFormat]
-                : self::JPG;
+            $type = $availableFormats[$outputFormat] ?? self::JPG;
         } else {
             $type = $imgInfo['mime'];
         }
@@ -48,11 +44,9 @@ class File
 
     /**
      * Get and return PHP's getimagesize data
-     * @param string $path
-     * @return array
      * @throws FileNotFoundException
      */
-    public static function getSize($path)
+    public static function getSize(string $path): array
     {
         if (!file_exists($path) || is_dir($path)) {
             throw new FileNotFoundException('Image not found.');
@@ -63,12 +57,9 @@ class File
 
     /**
      * Make and return an image resource from file
-     * @param string $path
-     * @param array $info
-     * @return resource
      * @throws FileNotFoundException|FileInvalidTypeException
      */
-    public static function get($path, array $info = null)
+    public static function get(string $path, array $info = null): GdImage
     {
         $info = $info ?: self::getSize($path);
 
@@ -83,9 +74,6 @@ class File
                 $srcImg = imagecreatefromgif($path);
                 break;
             case self::BMP:
-                if (PHP_VERSION_ID < 70200) {
-                    throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
-                }
                 $srcImg = imagecreatefrombmp($path);
                 break;
             case self::WEBP:
@@ -106,14 +94,9 @@ class File
 
     /**
      * Save image to given path
-     * @param string $path
-     * @param resource $img
-     * @param string $type
-     * @param null|int $quality
      * @throws FileInvalidTypeException
      */
-    public static function save($path, $img, $type = self::JPG, $quality = null)
-    {
+    public static function save(string $path, GdImage $img, string $type = self::JPG, ?int $quality = null): void {
         $dir = explode('/', $path);
         unset($dir[count($dir) - 1]);
         $dir = implode('/', $dir);
@@ -127,8 +110,7 @@ class File
     /**
      * @throws FileInvalidTypeException
      */
-    private static function output($path, $img, $type, $quality)
-    {
+    private static function output(string $path, GdImage $img, string $type, ?int $quality): void {
         if ($quality === 101 && ($type !== self::WEBP || PHP_VERSION_ID < 80100)) {
             $quality = 100;
         }
@@ -147,9 +129,6 @@ class File
                 @imagegif($img, $path);
                 break;
             case self::BMP:
-                if (PHP_VERSION_ID < 70200) {
-                    throw new FileInvalidTypeException('Only supported in PHP 7.2 and above.');
-                }
                 @imagebmp($img, $path);
                 break;
             case self::WEBP:
@@ -171,17 +150,14 @@ class File
      * Print image to PHP output
      * @throws FileInvalidTypeException
      */
-    public static function printToOutput($img, $type = self::JPG, $quality = null)
-    {
+    public static function printToOutput(GdImage $img, string $type = self::JPG, ?int $quality = null): void {
         self::output('php://output', $img, $type, $quality);
     }
 
     /**
      * Clean (destroy) given (by reference) image resources
-     * @param array $imgs
      */
-    public static function clean(array $imgs)
-    {
+    public static function clean(array $imgs): void {
         foreach ($imgs as $img) {
             imagedestroy($img);
         }
