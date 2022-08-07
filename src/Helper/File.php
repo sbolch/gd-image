@@ -129,7 +129,7 @@ class File
      */
     private static function output($path, $img, $type, $quality)
     {
-        if($quality === 101 && ($type !== self::WEBP || PHP_VERSION_ID < 80100)) {
+        if ($quality === 101 && ($type !== self::WEBP || PHP_VERSION_ID < 80100)) {
             $quality = 100;
         }
 
