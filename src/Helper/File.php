@@ -152,7 +152,8 @@ class File
      * Print image to PHP output
      * @throws FileInvalidTypeException
      */
-    public static function printToOutput(GdImage $img, string $type = self::JPG, ?int $quality = null): void {
+    public static function printToOutput(GdImage $img, string $type = self::JPG, ?int $quality = null): void
+    {
         self::output('php://output', $img, $type, $quality);
     }
 
