@@ -6,7 +6,6 @@ use GdImage;
 
 class Options
 {
-
     public static function transparency(GdImage $img, string $format): void
     {
         if ($format == File::GIF) {

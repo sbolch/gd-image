@@ -96,7 +96,8 @@ class File
      * Save image to given path
      * @throws FileInvalidTypeException
      */
-    public static function save(string $path, GdImage $img, string $type = self::JPG, ?int $quality = null): void {
+    public static function save(string $path, GdImage $img, string $type = self::JPG, ?int $quality = null): void
+    {
         $dir = explode('/', $path);
         unset($dir[count($dir) - 1]);
         $dir = implode('/', $dir);
@@ -110,7 +111,8 @@ class File
     /**
      * @throws FileInvalidTypeException
      */
-    private static function output(string $path, GdImage $img, string $type, ?int $quality): void {
+    private static function output(string $path, GdImage $img, string $type, ?int $quality): void
+    {
         if ($quality === 101 && ($type !== self::WEBP || PHP_VERSION_ID < 80100)) {
             $quality = 100;
         }
@@ -157,7 +159,8 @@ class File
     /**
      * Clean (destroy) given (by reference) image resources
      */
-    public static function clean(array $imgs): void {
+    public static function clean(array $imgs): void
+    {
         foreach ($imgs as $img) {
             imagedestroy($img);
         }

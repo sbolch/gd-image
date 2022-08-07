@@ -16,8 +16,8 @@ final class T1_ConverterTest extends TestCase
         parent::__construct($name, $data, $dataName);
 
         $this->converter = new Converter();
-        $this->img = __DIR__.'/img/test-square.jpg';
-        $this->testImg = __DIR__.'/img/test';
+        $this->img = __DIR__ . '/img/test-square.jpg';
+        $this->testImg = __DIR__ . '/img/test';
     }
 
     public function testBmp()

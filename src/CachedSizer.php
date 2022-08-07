@@ -4,7 +4,6 @@ namespace ShadeSoft\GDImage;
 
 class CachedSizer extends Sizer
 {
-
     /**
      * @see Sizer::widen()
      */

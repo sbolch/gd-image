@@ -25,7 +25,7 @@ class ConverterExtension extends Twig_Extension
         $filters = [];
 
         foreach (array_keys(File::FORMATS) as $format) {
-            $filters[] = new Twig_SimpleFilter("convert_to_$format", [$this, 'to'.ucfirst($format)]);
+            $filters[] = new Twig_SimpleFilter("convert_to_$format", [$this, 'to' . ucfirst($format)]);
         }
 
         return $filters;
@@ -58,7 +58,7 @@ class ConverterExtension extends Twig_Extension
 
     private function absPath($path)
     {
-        return $this->docroot.$path;
+        return $this->docroot . $path;
     }
 
     public function getName()

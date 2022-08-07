@@ -9,7 +9,6 @@ use ShadeSoft\GDImage\Helper\Options;
 
 class Sizer extends Converter
 {
-
     /**
      * Maximize image's size by its longer dimension while preserving its ratio
      */

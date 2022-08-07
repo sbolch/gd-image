@@ -14,9 +14,9 @@ final class T2_SizerTest extends TestCase
 
         $this->sizer = new Sizer();
         $this->imgs = [
-            'horizontal' => __DIR__.'/img/test-horizontal.jpg',
-            'vertical'   => __DIR__.'/img/test-vertical.jpg',
-            'square'     => __DIR__.'/img/test-square.jpg',
+            'horizontal' => __DIR__ . '/img/test-horizontal.jpg',
+            'vertical'   => __DIR__ . '/img/test-vertical.jpg',
+            'square'     => __DIR__ . '/img/test-square.jpg',
         ];
     }
 
