@@ -24,7 +24,7 @@ class Converter
     protected string $format;
     protected string $path;
     protected ?int $quality = null;
-    protected array $background;
+    protected ?array $background = null;
     protected string $originalFormat;
 
     /**
