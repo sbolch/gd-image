@@ -54,7 +54,7 @@ class Converter
      */
     public function quality($quality)
     {
-        if ($quality >= 0 && $quality <= 100) {
+        if ($quality >= 0 && $quality <= 101) {
             $this->quality = $quality;
         }
 
