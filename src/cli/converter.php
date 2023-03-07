@@ -17,21 +17,21 @@ $output = $args['o'] ?? $args['output'] ?? null;
 $format = $args['f'] ?? $args['format'] ?? null;
 $quality = $args['q'] ?? $args['quality'] ?? null;
 
-if(!$input) {
+if (!$input) {
     die('Missing input file.');
 }
 
 try {
     $i = (new Converter())->image($input);
-} catch(FileException $ex) {
+} catch (FileException $ex) {
     die('Missing input file.');
 }
 
-if(!$output && !$format) {
+if (!$output && !$format) {
     die('Missing output format.');
 }
 
-if($output && !$format) {
+if ($output && !$format) {
     $xOutput = explode('.', $output);
     $format = end($xOutput);
 }
@@ -40,7 +40,7 @@ $to = 'to' . ucfirst($format);
 
 $i->$to();
 
-if($quality) {
+if ($quality) {
     $i->quality($quality);
 }
 
