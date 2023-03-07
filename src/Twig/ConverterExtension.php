@@ -21,11 +21,12 @@ class ConverterExtension extends AbstractExtension
         $this->docroot = $docroot ?: $_SERVER['DOCUMENT_ROOT'];
     }
 
-    public function getFilters(): array {
+    public function getFilters(): array
+    {
         $filters = [];
 
         foreach (array_keys(File::FORMATS) as $format) {
-            $filters[] = new TwigFilter("convert_to_$format", function(string $img, string $targetPath = null, int $quality = null) use ($format) {
+            $filters[] = new TwigFilter("convert_to_$format", function (string $img, string $targetPath = null, int $quality = null) use ($format) {
                 return $this->convert($img, $format, $targetPath ?: "$img.$format", $quality);
             });
         }
@@ -41,12 +42,12 @@ class ConverterExtension extends AbstractExtension
                 ->$to()
                 ->target($this->absolute($targetPath));
 
-            if($quality) {
+            if ($quality) {
                 $ni->quality($quality);
             }
 
             $ni->save();
-        } catch(FileException $ex) {
+        } catch (FileException $ex) {
             return '';
         }
 
