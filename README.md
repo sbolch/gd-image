@@ -1,6 +1,6 @@
 # GDImage
 
-> An image editing package using PHP's GD library if other solutions fail for some reason.
+> An image editing package using PHP's GD library.
 
 [![Latest Stable Version](https://poser.pugx.org/shadesoft/gd-image/version)](https://packagist.org/packages/shadesoft/gd-image)
 [![StyleCI](https://styleci.io/repos/109691251/shield?style=flat)](https://styleci.io/repos/109691251)
@@ -147,3 +147,44 @@ Same as Image Sizer but it uses cache.
   }
 ```
 
+## Twig integration
+
+If you use Twig, you can include the extensions
+- `ShadeSoft\GDImage\Twig\ConverterExtension([string $docroot])`
+- `ShadeSoft\GDImage\Twig\SizerExtension([string $docroot [, string $cacheDir]])`
+
+> You can override the default PHP document root with the optional $docroot parameter for both extensions.
+> 
+> You can use the cache mechanism in SizerExtension by using the optional $cacheDir parameter with your desired cache folder.  
+
+Then you can use the below filters (question mark marks optional parameters)
+
+```twig
+{# Converting image and returning its new path via ShadeSoft\GDImage\Twig\ConverterExtension #}
+{{ 'path/to/image'|convert_to_avif(?targetPath, ?quality) }}
+{{ 'path/to/image'|convert_to_bmp(?targetPath, ?quality) }}
+{{ 'path/to/image'|convert_to_gif(?targetPath, ?quality) }}
+{{ 'path/to/image'|convert_to_jpg(?targetPath, ?quality) }}
+{{ 'path/to/image'|convert_to_jpeg(?targetPath, ?quality) }}
+{{ 'path/to/image'|convert_to_png(?targetPath, ?quality) }}
+{{ 'path/to/image'|convert_to_webp(?targetPath, ?quality) }}
+
+{# Resizing image and returning its new path via ShadeSoft\GDImage\Twig\SizerExtension #}
+{{ 'path/to/image'|widen(width, ?outputFormat, ?targetPath) }}
+{{ 'path/to/image'|heighten(height, ?outputFormat, ?targetPath) }}
+{{ 'path/to/image'|maximize(width, height, ?outputFormat, ?targetPath) }}
+{{ 'path/to/image'|thumbnail(width, height, ?outputFormat, ?targetPath) }}
+```
+
+## Phar mode (only Converter yet)
+
+You can download the phar file on the [releases](https://github.com/ShadeSoft/GDImage/releases) page and use it as below:
+
+```sh
+php converter.phar -i /path/to/image -f jpg
+```
+
+- -i (--input) : Input file
+- -o (--output) : Output file (optional - you must use -o or -f)
+- -f (--format) : Output format (optional - you must use -o or -f)
+- -q (--quality): Encoding quality as percentage (optional)
