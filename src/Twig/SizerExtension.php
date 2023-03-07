@@ -22,15 +22,16 @@ class SizerExtension extends AbstractExtension
         $this->cacheDir = $cacheDir;
     }
 
-    public function getFilters(): array {
+    public function getFilters(): array
+    {
         return [
             new TwigFilter(
                 'widen',
-                function(string $img, int $width, string $outputFormat = null, string $targetPath = null): string {
-                    if($targetPath && $this->cacheDir) {
+                function (string $img, int $width, string $outputFormat = null, string $targetPath = null): string {
+                    if ($targetPath && $this->cacheDir) {
                         $targetPath = $this->cacheDir . $this->cacheFilename($img, "_w$width", $outputFormat);
 
-                        if(file_exists($this->absolute($targetPath))) {
+                        if (file_exists($this->absolute($targetPath))) {
                             return $targetPath;
                         }
                     }
@@ -38,17 +39,17 @@ class SizerExtension extends AbstractExtension
                     try {
                         $ni = $this->sizer->image($this->absolute($img));
 
-                        if($outputFormat) {
+                        if ($outputFormat) {
                             $to = 'to' . ucfirst($outputFormat);
                             $ni->$to();
                         }
 
-                        if($targetPath) {
+                        if ($targetPath) {
                             $ni->target($this->absolute($targetPath));
                         }
 
                         $ni->widen($width)->save();
-                    } catch(FileException $ex) {
+                    } catch (FileException $ex) {
                         return $this->absolute($img);
                     }
 
@@ -57,11 +58,11 @@ class SizerExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'heighten',
-                function(string $img, int $height, string $outputFormat = null, string $targetPath = null): string {
-                    if($targetPath && $this->cacheDir) {
+                function (string $img, int $height, string $outputFormat = null, string $targetPath = null): string {
+                    if ($targetPath && $this->cacheDir) {
                         $targetPath = $this->cacheDir . $this->cacheFilename($img, "_h$height", $outputFormat);
 
-                        if(file_exists($this->absolute($targetPath))) {
+                        if (file_exists($this->absolute($targetPath))) {
                             return $targetPath;
                         }
                     }
@@ -69,17 +70,17 @@ class SizerExtension extends AbstractExtension
                     try {
                         $ni = $this->sizer->image($this->absolute($img));
 
-                        if($outputFormat) {
+                        if ($outputFormat) {
                             $to = 'to' . ucfirst($outputFormat);
                             $ni->$to();
                         }
 
-                        if($targetPath) {
+                        if ($targetPath) {
                             $ni->target($this->absolute($targetPath));
                         }
 
                         $ni->heighten($height)->save();
-                    } catch(FileException $ex) {
+                    } catch (FileException $ex) {
                         return '';
                     }
 
@@ -88,11 +89,11 @@ class SizerExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'maximize',
-                function(string $img, int $width, int $height, string $outputFormat = null, string $targetPath = null): string {
-                    if($targetPath && $this->cacheDir) {
+                function (string $img, int $width, int $height, string $outputFormat = null, string $targetPath = null): string {
+                    if ($targetPath && $this->cacheDir) {
                         $targetPath = $this->cacheDir . $this->cacheFilename($img, "_m($width)_$height", $outputFormat);
 
-                        if(file_exists($this->absolute($targetPath))) {
+                        if (file_exists($this->absolute($targetPath))) {
                             return $targetPath;
                         }
                     }
@@ -100,17 +101,17 @@ class SizerExtension extends AbstractExtension
                     try {
                         $ni = $this->sizer->image($this->absolute($img));
 
-                        if($outputFormat) {
+                        if ($outputFormat) {
                             $to = 'to' . ucfirst($outputFormat);
                             $ni->$to();
                         }
 
-                        if($targetPath) {
+                        if ($targetPath) {
                             $ni->target($this->absolute($targetPath));
                         }
 
                         $ni->maximize($width, $height)->save();
-                    } catch(FileException $ex) {
+                    } catch (FileException $ex) {
                         return '';
                     }
 
@@ -119,11 +120,11 @@ class SizerExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'thumbnail',
-                function(string $img, int $width, int $height, string $outputFormat = null, string $targetPath = null): string {
-                    if($targetPath && $this->cacheDir) {
+                function (string $img, int $width, int $height, string $outputFormat = null, string $targetPath = null): string {
+                    if ($targetPath && $this->cacheDir) {
                         $targetPath = $this->cacheDir . $this->cacheFilename($img, "_thumb($width)_$height", $outputFormat);
 
-                        if(file_exists($this->absolute($targetPath))) {
+                        if (file_exists($this->absolute($targetPath))) {
                             return $targetPath;
                         }
                     }
@@ -131,17 +132,17 @@ class SizerExtension extends AbstractExtension
                     try {
                         $ni = $this->sizer->image($this->absolute($img));
 
-                        if($outputFormat) {
+                        if ($outputFormat) {
                             $to = 'to' . ucfirst($outputFormat);
                             $ni->$to();
                         }
 
-                        if($targetPath) {
+                        if ($targetPath) {
                             $ni->target($this->absolute($targetPath));
                         }
 
                         $ni->thumbnail($width, $height)->save();
-                    } catch(FileException $ex) {
+                    } catch (FileException $ex) {
                         return '';
                     }
 
@@ -157,7 +158,7 @@ class SizerExtension extends AbstractExtension
         $count = count($xImg);
 
         $filename = '';
-        for($i = 0; $i < $count - 1; ++$i) {
+        for ($i = 0; $i < $count - 1; ++$i) {
             $filename .= $xImg[$i];
         }
 
