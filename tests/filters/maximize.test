@@ -1,0 +1,8 @@
+--TEST--
+'maximize' filter
+--TEMPLATE--
+{{ 'tests/img/test-horizontal.jpg'|maximize(10, 10, 'jpg', test_img) }}
+--DATA--
+return ['test_img' => 'tests/img/test.jpg']
+--EXPECT--
+tests/img/test.jpg

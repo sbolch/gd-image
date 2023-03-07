@@ -1,0 +1,8 @@
+--TEST--
+'widen' filter
+--TEMPLATE--
+{{ 'tests/img/test-horizontal.jpg'|widen(10, 'jpg', test_img) }}
+--DATA--
+return ['test_img' => 'tests/img/test.jpg']
+--EXPECT--
+tests/img/test.jpg

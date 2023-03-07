@@ -1,8 +1,8 @@
 --TEST--
-"convert_to_webp" filter
+'convert_to_webp' filter
 --TEMPLATE--
-{{ "tests/img/test-horizontal.jpg"|convert_to_webp(testImg) }}
+{{ 'tests/img/test-horizontal.jpg'|convert_to_webp(test_img) }}
 --DATA--
-return array('testImg' => "tests/img/test.webp")
+return array('test_img' => 'tests/img/test.webp')
 --EXPECT--
 tests/img/test.webp

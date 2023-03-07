@@ -1,6 +1,6 @@
 {
 	"name": "shadesoft/gd-image",
-	"description": "An image editing package using PHP's GD library if other solutions fail for some reason.",
+	"description": "An image editing package using PHP's GD library.",
 	"keywords": [
 		"image",
 		"gd",
@@ -13,7 +13,7 @@
 		{
 			"name": "Szabolcs Surányi",
 			"email": "szabolcs.suranyi@shadesoft.hu",
-			"homepage": "http://shadesoft.hu"
+			"homepage": "https://shadesoft.dev"
 		}
 	],
 	"autoload": {
@@ -28,10 +28,10 @@
 	"require-dev": {
 		"phpunit/phpunit": ">=9.5",
 		"symfony/var-dumper": ">=5.4",
-		"twig/twig": "<3.0"
+		"twig/twig": ">=2.0"
 	},
 	"suggest": {
-		"twig/twig": "Enables Twig filters"
+		"twig/twig": "Enables integrated Twig filters"
 	},
 	"extra": {
 		"branch-alias": {

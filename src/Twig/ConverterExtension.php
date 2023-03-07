@@ -4,64 +4,56 @@ namespace ShadeSoft\GDImage\Twig;
 
 use ShadeSoft\GDImage\Converter;
 use ShadeSoft\GDImage\Exception\FileException;
-use ShadeSoft\GDImage\Exception\MethodNotFoundException;
 use ShadeSoft\GDImage\Helper\File;
-use Twig_Extension;
-use Twig_SimpleFilter;
+use ShadeSoft\GDImage\Traits\ExtensionTrait;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class ConverterExtension extends Twig_Extension
+class ConverterExtension extends AbstractExtension
 {
-    private $converter;
-    private $docroot;
+    use ExtensionTrait;
 
-    public function __construct(Converter $converter)
+    private Converter $converter;
+
+    public function __construct(string $docroot = null)
     {
-        $this->converter = $converter;
-        $this->docroot = $_SERVER['DOCUMENT_ROOT'];
+        $this->converter = new Converter();
+        $this->docroot = $docroot ?: $_SERVER['DOCUMENT_ROOT'];
     }
 
-    public function getFilters()
-    {
+    public function getFilters(): array {
         $filters = [];
 
         foreach (array_keys(File::FORMATS) as $format) {
-            $filters[] = new Twig_SimpleFilter("convert_to_$format", [$this, 'to' . ucfirst($format)]);
+            $filters[] = new TwigFilter("convert_to_$format", function(string $img, string $targetPath = null, int $quality = null) use ($format) {
+                return $this->convert($img, $format, $targetPath ?: "$img.$format", $quality);
+            });
         }
 
         return $filters;
     }
 
-    /**
-     * Resolve magic calls to convert image
-     * @param string $method
-     * @param array $args
-     * - First argument is source file path or image resource
-     * - Second argument is target path
-     * - Third argument is quality percent as integer
-     * @return string
-     * @throws MethodNotFoundException|FileException
-     */
-    public function __call($method, $args)
+    private function convert(string $img, string $format, string $targetPath, int $quality = null): string
     {
-        if (strpos($method, 'to') === 0) {
-            throw new MethodNotFoundException("");
+        try {
+            $to = 'to' . ucfirst($format);
+            $ni = $this->converter->image($this->absolute($img))
+                ->$to()
+                ->target($this->absolute($targetPath));
+
+            if($quality) {
+                $ni->quality($quality);
+            }
+
+            $ni->save();
+        } catch(FileException $ex) {
+            return '';
         }
 
-        return $this->converter
-            ->image($this->absPath($args[0]))
-            ->target(isset($args[1]) ? $args[1] : $args[0])
-            ->$method(
-                [isset($args[2]) ? $args[2] : null]
-            )
-            ->save();
+        return $targetPath;
     }
 
-    private function absPath($path)
-    {
-        return $this->docroot . $path;
-    }
-
-    public function getName()
+    public function getName(): string
     {
         return 'shadesoft_gd_converter';
     }

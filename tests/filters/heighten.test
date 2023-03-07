@@ -1,0 +1,8 @@
+--TEST--
+'heighten' filter
+--TEMPLATE--
+{{ 'tests/img/test-horizontal.jpg'|heighten(10, 'jpg', test_img) }}
+--DATA--
+return ['test_img' => 'tests/img/test.jpg']
+--EXPECT--
+tests/img/test.jpg
