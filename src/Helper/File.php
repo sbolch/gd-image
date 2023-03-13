@@ -82,7 +82,7 @@ class File
      */
     public static function printToOutput(GdImage $img, int $type = IMAGETYPE_JPEG, ?int $quality = null): void
     {
-        self::output('php://output', $img, image_type_to_mime_type($type), $quality);
+        self::output('php://output', $img, $type, $quality);
     }
 
     /**
