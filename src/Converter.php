@@ -113,10 +113,10 @@ class Converter
      */
     public function save(): string
     {
-        if (in_array($this->originalFormat, [File::AVIF, File::PNG, File::GIF, File::WEBP])) {
+        if (in_array($this->originalFormat, [IMAGETYPE_AVIF, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_WEBP])) {
             if ($this->background) {
                 Options::background($this->img, $this->background);
-            } elseif (in_array($this->format, [File::AVIF, File::PNG, File::GIF, File::WEBP])) {
+            } elseif (in_array($this->format, [IMAGETYPE_AVIF, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_WEBP])) {
                 Options::transparency($this->img, $this->format);
             }
         }
@@ -132,10 +132,10 @@ class Converter
      */
     public function output(): void
     {
-        if (in_array($this->originalFormat, [File::AVIF, File::PNG, File::GIF, File::WEBP])) {
+        if (in_array($this->originalFormat, [IMAGETYPE_AVIF, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_WEBP])) {
             if ($this->background) {
                 Options::background($this->img, $this->background);
-            } elseif (in_array($this->format, [File::AVIF, File::PNG, File::GIF, File::WEBP])) {
+            } elseif (in_array($this->format, [IMAGETYPE_AVIF, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_WEBP])) {
                 Options::transparency($this->img, $this->format);
             }
         }

@@ -49,7 +49,7 @@ class SizerExtension extends AbstractExtension
                         }
 
                         $ni->widen($width)->save();
-                    } catch (FileException $ex) {
+                    } catch (FileException) {
                         return $this->absolute($img);
                     }
 
@@ -80,7 +80,7 @@ class SizerExtension extends AbstractExtension
                         }
 
                         $ni->heighten($height)->save();
-                    } catch (FileException $ex) {
+                    } catch (FileException) {
                         return '';
                     }
 
@@ -111,7 +111,7 @@ class SizerExtension extends AbstractExtension
                         }
 
                         $ni->maximize($width, $height)->save();
-                    } catch (FileException $ex) {
+                    } catch (FileException) {
                         return '';
                     }
 
@@ -142,7 +142,7 @@ class SizerExtension extends AbstractExtension
                         }
 
                         $ni->thumbnail($width, $height)->save();
-                    } catch (FileException $ex) {
+                    } catch (FileException) {
                         return '';
                     }
 

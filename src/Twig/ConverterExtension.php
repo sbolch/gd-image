@@ -47,7 +47,7 @@ class ConverterExtension extends AbstractExtension
             }
 
             $ni->save();
-        } catch (FileException $ex) {
+        } catch (FileException) {
             return '';
         }
 

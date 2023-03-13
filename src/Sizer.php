@@ -4,7 +4,6 @@ namespace ShadeSoft\GDImage;
 
 use GdImage;
 use ShadeSoft\GDImage\Exception\FileException;
-use ShadeSoft\GDImage\Helper\File;
 use ShadeSoft\GDImage\Helper\Options;
 
 class Sizer extends Converter
@@ -66,8 +65,8 @@ class Sizer extends Converter
     {
         $dstImg = imagecreatetruecolor($nw, $nh);
 
-        if (in_array($this->originalFormat, [File::PNG, File::GIF, File::WEBP])
-           && in_array($this->format, [File::PNG, File::GIF, File::WEBP])) {
+        if (in_array($this->originalFormat, [IMAGETYPE_AVIF, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_WEBP])
+           && in_array($this->format, [IMAGETYPE_AVIF, IMAGETYPE_GIF, IMAGETYPE_PNG, IMAGETYPE_WEBP])) {
             Options::transparency($dstImg, $this->format);
         }
 

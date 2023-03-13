@@ -8,9 +8,9 @@ final class T2_SizerTest extends TestCase
     private Sizer $sizer;
     private array $imgs;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct($name = null)
     {
-        parent::__construct($name, $data, $dataName);
+        parent::__construct($name);
 
         $this->sizer = new Sizer();
         $this->imgs = [

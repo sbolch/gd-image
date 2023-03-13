@@ -6,9 +6,9 @@ use GdImage;
 
 class Options
 {
-    public static function transparency(GdImage $img, string $format): void
+    public static function transparency(GdImage $img, int $format): void
     {
-        if ($format == File::GIF) {
+        if ($format == IMAGETYPE_GIF) {
             $transparent = imagecolorallocatealpha($img, 0, 0, 0, 127);
             imagefill($img, 0, 0, $transparent);
             imagecolortransparent($img, $transparent);

@@ -11,9 +11,9 @@ final class T1_ConverterTest extends TestCase
     private string $img;
     private string $testImg;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct($name = null)
     {
-        parent::__construct($name, $data, $dataName);
+        parent::__construct($name);
 
         $this->converter = new Converter();
         $this->img = __DIR__ . '/img/test-square.jpg';
@@ -27,20 +27,10 @@ final class T1_ConverterTest extends TestCase
         $this->converter
             ->image($this->img)
             ->target($this->testImg)
-            ->toBmp();
+            ->toBmp()
+            ->save();
 
-        if (PHP_VERSION_ID < 70200) {
-            try {
-                $this->converter->save();
-                $this->fail('Expected Exception has not been raised.');
-            } catch (FileInvalidTypeException $ex) {
-                $this->assertEquals('Only supported in PHP 7.2 and above.', $ex->getMessage());
-            }
-        } else {
-            $this->converter->save();
-            $this->assertEquals(File::BMP, File::getType($this->testImg));
-        }
-
+        $this->assertEquals(IMAGETYPE_BMP, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
@@ -54,7 +44,7 @@ final class T1_ConverterTest extends TestCase
             ->toGif()
             ->save();
 
-        $this->assertEquals(File::GIF, File::getType($this->testImg));
+        $this->assertEquals(IMAGETYPE_GIF, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
@@ -68,7 +58,7 @@ final class T1_ConverterTest extends TestCase
             ->toJpg()
             ->save();
 
-        $this->assertEquals(File::JPG, File::getType($this->testImg));
+        $this->assertEquals(IMAGETYPE_JPEG, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
@@ -82,7 +72,7 @@ final class T1_ConverterTest extends TestCase
             ->toJpeg()
             ->save();
 
-        $this->assertEquals(File::JPG, File::getType($this->testImg));
+        $this->assertEquals(IMAGETYPE_JPEG, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
@@ -96,7 +86,7 @@ final class T1_ConverterTest extends TestCase
             ->toPng()
             ->save();
 
-        $this->assertEquals(File::PNG, File::getType($this->testImg));
+        $this->assertEquals(IMAGETYPE_PNG, File::getType($this->testImg));
         @unlink($this->testImg);
     }
 
@@ -111,33 +101,25 @@ final class T1_ConverterTest extends TestCase
                 ->toWebp()
                 ->save();
 
-            $this->assertEquals(File::WEBP, File::getType($this->testImg));
+            $this->assertEquals(IMAGETYPE_WEBP, File::getType($this->testImg));
             @unlink($this->testImg);
         }
     }
 
     public function testAvif()
     {
-        @unlink($this->testImg);
+        if (function_exists('imageavif')) {
+            @unlink($this->testImg);
 
-        $this->converter
-            ->image($this->img)
-            ->target($this->testImg)
-            ->toAvif();
+            $this->converter
+                ->image($this->img)
+                ->target($this->testImg)
+                ->toAvif()
+                ->save();
 
-        if (PHP_VERSION_ID < 80100) {
-            try {
-                $this->converter->save();
-                $this->fail('Expected Exception has not been raised.');
-            } catch (FileInvalidTypeException $ex) {
-                $this->assertEquals('Only supported in PHP 8.1 and above.', $ex->getMessage());
-            }
-        } else {
-            $this->converter->save();
-            $this->assertEquals(File::AVIF, File::getType($this->testImg));
+            $this->assertEquals(IMAGETYPE_AVIF, File::getType($this->testImg));
+            @unlink($this->testImg);
         }
-
-        @unlink($this->testImg);
     }
 
     public function testInvalid()
