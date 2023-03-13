@@ -29,7 +29,7 @@ class File
         if ($outputFormat) {
             $type = $availableFormats[$outputFormat] ?? IMAGETYPE_JPEG;
         } else {
-            if(($type = exif_imagetype($path)) === false) {
+            if (($type = exif_imagetype($path)) === false) {
                 throw new FileNotFoundException('Image not found.');
             }
         }
@@ -43,7 +43,7 @@ class File
      */
     public static function get(string $path): GdImage
     {
-        if(($type = exif_imagetype($path)) === false) {
+        if (($type = exif_imagetype($path)) === false) {
             throw new FileNotFoundException('Image not found.');
         }
 
