@@ -9,7 +9,7 @@ use ShadeSoft\GDImage\Exception\FileNotFoundException;
 class File
 {
     public const AVIF = 'image/avif';
-    public const BMP = PHP_VERSION_ID >= 70300 ? 'image/bmp' : 'image/x-ms-bmp';
+    public const BMP = 'image/bmp';
     public const GIF = 'image/gif';
     public const JPG = 'image/jpeg';
     public const PNG = 'image/png';
