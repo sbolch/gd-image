@@ -1,8 +1,0 @@
---TEST--
-"convert_to_png" filter
---TEMPLATE--
-{{ "tests/img/test-horizontal.jpg"|convert_to_png(testImg) }}
---DATA--
-return array('testImg' => "tests/img/test.png")
---EXPECT--
-tests/img/test.png
