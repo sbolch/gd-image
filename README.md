@@ -3,7 +3,7 @@
 > An image editing package using PHP's GD library.
 
 [![Latest Stable Version](https://poser.pugx.org/shadesoft/gd-image/version)](https://packagist.org/packages/shadesoft/gd-image)
-[![StyleCI](https://styleci.io/repos/109691251/shield?style=flat)](https://styleci.io/repos/109691251)
+[![StyleCI](https://styleci.io/repos/109691251/shield?branch=main&style=flat)](https://styleci.io/repos/109691251?branch=main)
 [![Total Downloads](https://poser.pugx.org/shadesoft/gd-image/downloads)](https://packagist.org/packages/shadesoft/gd-image)
 [![License](https://poser.pugx.org/shadesoft/gd-image/license)](https://packagist.org/packages/shadesoft/gd-image)
 
