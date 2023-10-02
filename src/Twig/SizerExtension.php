@@ -1,10 +1,10 @@
 <?php
 
-namespace ShadeSoft\GDImage\Twig;
+namespace sbolch\GDImage\Twig;
 
-use ShadeSoft\GDImage\CachedSizer;
-use ShadeSoft\GDImage\Exception\FileException;
-use ShadeSoft\GDImage\Traits\ExtensionTrait;
+use sbolch\GDImage\CachedSizer;
+use sbolch\GDImage\Exception\FileException;
+use sbolch\GDImage\Traits\ExtensionTrait;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -167,6 +167,6 @@ class SizerExtension extends AbstractExtension
 
     public function getName(): string
     {
-        return 'shadesoft_gd_sizer';
+        return 'sbolch_gd_sizer';
     }
 }

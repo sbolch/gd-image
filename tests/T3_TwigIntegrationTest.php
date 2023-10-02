@@ -1,7 +1,7 @@
 <?php
 
-use ShadeSoft\GDImage\Twig\ConverterExtension;
-use ShadeSoft\GDImage\Twig\SizerExtension;
+use sbolch\GDImage\Twig\ConverterExtension;
+use sbolch\GDImage\Twig\SizerExtension;
 use Twig\Test\IntegrationTestCase;
 
 class T3_TwigIntegrationTest extends IntegrationTestCase

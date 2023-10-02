@@ -1,13 +1,13 @@
 <?php
 
-namespace ShadeSoft\GDImage;
+namespace sbolch\GDImage;
 
 use GdImage;
-use ShadeSoft\GDImage\Exception\FileException;
-use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
-use ShadeSoft\GDImage\Exception\MethodNotFoundException;
-use ShadeSoft\GDImage\Helper\File;
-use ShadeSoft\GDImage\Helper\Options;
+use sbolch\GDImage\Exception\FileException;
+use sbolch\GDImage\Exception\FileInvalidTypeException;
+use sbolch\GDImage\Exception\MethodNotFoundException;
+use sbolch\GDImage\Helper\File;
+use sbolch\GDImage\Helper\Options;
 
 /**
  * @method self toAvif()

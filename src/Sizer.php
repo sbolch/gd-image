@@ -1,10 +1,10 @@
 <?php
 
-namespace ShadeSoft\GDImage;
+namespace sbolch\GDImage;
 
 use GdImage;
-use ShadeSoft\GDImage\Exception\FileException;
-use ShadeSoft\GDImage\Helper\Options;
+use sbolch\GDImage\Exception\FileException;
+use sbolch\GDImage\Helper\Options;
 
 class Sizer extends Converter
 {

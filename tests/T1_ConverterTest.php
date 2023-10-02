@@ -1,9 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use ShadeSoft\GDImage\Converter;
-use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
-use ShadeSoft\GDImage\Helper\File;
+use sbolch\GDImage\Converter;
+use sbolch\GDImage\Exception\FileInvalidTypeException;
+use sbolch\GDImage\Helper\File;
 
 final class T1_ConverterTest extends TestCase
 {

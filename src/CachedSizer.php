@@ -1,6 +1,6 @@
 <?php
 
-namespace ShadeSoft\GDImage;
+namespace sbolch\GDImage;
 
 class CachedSizer extends Sizer
 {

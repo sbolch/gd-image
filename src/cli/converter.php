@@ -1,7 +1,7 @@
 <?php
 
-use ShadeSoft\GDImage\Converter;
-use ShadeSoft\GDImage\Exception\FileException;
+use sbolch\GDImage\Converter;
+use sbolch\GDImage\Exception\FileException;
 
 require_once dirname(__DIR__) . '/Exception/FileException.php';
 require_once dirname(__DIR__) . '/Exception/FileInvalidTypeException.php';

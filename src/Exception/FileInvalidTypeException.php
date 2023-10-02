@@ -1,6 +1,6 @@
 <?php
 
-namespace ShadeSoft\GDImage\Exception;
+namespace sbolch\GDImage\Exception;
 
 class FileInvalidTypeException extends FileException
 {

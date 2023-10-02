@@ -1,6 +1,6 @@
 <?php
 
-namespace ShadeSoft\GDImage\Traits;
+namespace sbolch\GDImage\Traits;
 
 trait ExtensionTrait
 {

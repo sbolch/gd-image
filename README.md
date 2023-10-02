@@ -2,10 +2,10 @@
 
 > An image editing package using PHP's GD library.
 
-[![Latest Stable Version](https://poser.pugx.org/shadesoft/gd-image/version)](https://packagist.org/packages/shadesoft/gd-image)
+[![Latest Stable Version](https://poser.pugx.org/sbolch/gd-image/version)](https://packagist.org/packages/sbolch/gd-image)
 [![StyleCI](https://styleci.io/repos/109691251/shield?branch=main&style=flat)](https://styleci.io/repos/109691251?branch=main)
-[![Total Downloads](https://poser.pugx.org/shadesoft/gd-image/downloads)](https://packagist.org/packages/shadesoft/gd-image)
-[![License](https://poser.pugx.org/shadesoft/gd-image/license)](https://packagist.org/packages/shadesoft/gd-image)
+[![Total Downloads](https://poser.pugx.org/sbolch/gd-image/downloads)](https://packagist.org/packages/sbolch/gd-image)
+[![License](https://poser.pugx.org/sbolch/gd-image/license)](https://packagist.org/packages/sbolch/gd-image)
 
 ## Installation
 
@@ -13,7 +13,7 @@ Open a command console, enter your project directory and execute the following c
 version of this bundle:
 
 ```console
-$ composer require shadesoft/gd-image
+$ composer require sbolch/gd-image
 ```
 
 This command requires you to have Composer installed globally, as explained in
@@ -27,7 +27,7 @@ of the Composer documentation.
 ```php
 <?php
   // ...
-  use ShadeSoft\GDImage\Converter;
+  use sbolch\GDImage\Converter;
   // ...
   class Demo {
     public function demo() {
@@ -78,7 +78,7 @@ of the Composer documentation.
 ```php
 <?php
   // ...
-  use ShadeSoft\GDImage\Sizer;
+  use sbolch\GDImage\Sizer;
   // ...
   class Demo {
     public function demo() {
@@ -132,7 +132,7 @@ Same as Image Sizer but it uses cache.
 ```php
 <?php
   // ...
-  use ShadeSoft\GDImage\CachedSizer;
+  use sbolch\GDImage\CachedSizer;
   // ...
   class Demo {
     public function demo() {
@@ -150,8 +150,8 @@ Same as Image Sizer but it uses cache.
 ## Twig integration
 
 If you use Twig, you can include the extensions
-- `ShadeSoft\GDImage\Twig\ConverterExtension([string $docroot])`
-- `ShadeSoft\GDImage\Twig\SizerExtension([string $docroot [, string $cacheDir]])`
+- `sbolch\GDImage\Twig\ConverterExtension([string $docroot])`
+- `sbolch\GDImage\Twig\SizerExtension([string $docroot [, string $cacheDir]])`
 
 > You can override the default PHP document root with the optional $docroot parameter for both extensions.
 > 
@@ -160,7 +160,7 @@ If you use Twig, you can include the extensions
 Then you can use the below filters (question mark marks optional parameters)
 
 ```twig
-{# Converting image and returning its new path via ShadeSoft\GDImage\Twig\ConverterExtension #}
+{# Converting image and returning its new path via sbolch\GDImage\Twig\ConverterExtension #}
 {{ 'path/to/image'|convert_to_avif(?targetPath, ?quality) }}
 {{ 'path/to/image'|convert_to_bmp(?targetPath, ?quality) }}
 {{ 'path/to/image'|convert_to_gif(?targetPath, ?quality) }}
@@ -169,7 +169,7 @@ Then you can use the below filters (question mark marks optional parameters)
 {{ 'path/to/image'|convert_to_png(?targetPath, ?quality) }}
 {{ 'path/to/image'|convert_to_webp(?targetPath, ?quality) }}
 
-{# Resizing image and returning its new path via ShadeSoft\GDImage\Twig\SizerExtension #}
+{# Resizing image and returning its new path via sbolch\GDImage\Twig\SizerExtension #}
 {{ 'path/to/image'|widen(width, ?outputFormat, ?targetPath) }}
 {{ 'path/to/image'|heighten(height, ?outputFormat, ?targetPath) }}
 {{ 'path/to/image'|maximize(width, height, ?outputFormat, ?targetPath) }}
@@ -178,7 +178,7 @@ Then you can use the below filters (question mark marks optional parameters)
 
 ## Phar mode (only Converter yet)
 
-You can download the phar file on the [releases](https://github.com/ShadeSoft/GDImage/releases) page and use it as below:
+You can download the phar file on the [releases](https://github.com/sbolch/GDImage/releases) page and use it as below:
 
 ```sh
 php converter.phar -i /path/to/image -f jpg

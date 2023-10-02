@@ -1,11 +1,11 @@
 <?php
 
-namespace ShadeSoft\GDImage\Twig;
+namespace sbolch\GDImage\Twig;
 
-use ShadeSoft\GDImage\Converter;
-use ShadeSoft\GDImage\Exception\FileException;
-use ShadeSoft\GDImage\Helper\File;
-use ShadeSoft\GDImage\Traits\ExtensionTrait;
+use sbolch\GDImage\Converter;
+use sbolch\GDImage\Exception\FileException;
+use sbolch\GDImage\Helper\File;
+use sbolch\GDImage\Traits\ExtensionTrait;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -56,6 +56,6 @@ class ConverterExtension extends AbstractExtension
 
     public function getName(): string
     {
-        return 'shadesoft_gd_converter';
+        return 'sbolch_gd_converter';
     }
 }

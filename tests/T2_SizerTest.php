@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use ShadeSoft\GDImage\Sizer;
+use sbolch\GDImage\Sizer;
 
 final class T2_SizerTest extends TestCase
 {

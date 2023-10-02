@@ -1,10 +1,10 @@
 <?php
 
-namespace ShadeSoft\GDImage\Helper;
+namespace sbolch\GDImage\Helper;
 
 use GdImage;
-use ShadeSoft\GDImage\Exception\FileInvalidTypeException;
-use ShadeSoft\GDImage\Exception\FileNotFoundException;
+use sbolch\GDImage\Exception\FileInvalidTypeException;
+use sbolch\GDImage\Exception\FileNotFoundException;
 
 class File
 {

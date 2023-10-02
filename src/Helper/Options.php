@@ -1,6 +1,6 @@
 <?php
 
-namespace ShadeSoft\GDImage\Helper;
+namespace sbolch\GDImage\Helper;
 
 use GdImage;
 
